@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * This file is part of the Qunity package.
+ *
+ * Copyright (c) Rodion Kachkin <kyleRQWS@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.2/phpunit.xsd"
+         bootstrap="./bootstrap.php"
+         cacheResult="false">
+    <testsuites>
+        <testsuite name="packages">
+            <directory>./../../code/*/*/test</directory>
+        </testsuite>
+        <testsuite name="custom">
+            <directory>.</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
