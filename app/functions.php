@@ -18,6 +18,8 @@ function init(): void
 
     $composer = json_decode(file_get_contents(BASE_DIR . '/composer.json'), true);
     define('PROJECT_VERSION', $composer['version'] ?? null);
+    define('PROJECT_AUTHORS', $composer['authors'] ?? []);
+
     define('PROJECT_MODE', getenv('PROJECT_MODE'));
 }
 
@@ -26,24 +28,32 @@ function init(): void
  */
 function welcome(): void
 {
-    $version = PROJECT_VERSION;
+    $version = 'v.' . (PROJECT_VERSION != null ? PROJECT_VERSION : 'dev');
+    $authors = array_diff(array_map(function (array $author): string {
+        return implode(' ', $author);
+    }, PROJECT_AUTHORS), ['']);
+
     if (PHP_SAPI == 'cli') {
+        $line1 = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
+        $line2 = substr($line1, strlen($version) + 1);
+        $authors = ($authors != [] ? "\n (c) " . implode("\n     ", $authors) . "\n" : '') . "\n";
         print <<<EOD
-\e[32m\n
-    _____  _     _ __   _ _____ _______ __   __
-   |   __| |     | | \  |   |      |      \_/  
-   |____\| |_____| |  \_| __|__    |       |   
-                                             \e[37m v.$version
-                                               (c) Rodion Kachkin \e[0m\n\n
+\n\e[33m $line1\e[32m
+    _____  _     _ __   _ _____ _______ __   __   
+   |   __| |     | | \  |   |      |      \_/     
+   |____\| |_____| |  \_| __|__    |       |      
+\e[33m $line2\e[37m $version 
+\e[37m $authors
 EOD;
     } else {
+        $authors = $authors != [] ? '(c) ' . implode(', ', $authors) : '-';
         print <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Welcome</title>
-    <meta name="author" content="(c) Rodion Kachkin">
+    <meta name="author" content="$authors">
     <style>
         html, body {
             height: 100%;
@@ -58,6 +68,9 @@ EOD;
         .wrapper .welcome {
             font: 76px Verdana, Geneva, sans-serif;
             font-weight: bold;
+            border: 7px solid #707070;
+            border-left-style: none;
+            border-right-style: none;
         }
         .wrapper .title {
             text-transform: uppercase;
@@ -74,7 +87,7 @@ EOD;
 <body>
     <div class="wrapper">
         <div class="welcome">
-            <span class="title">Qunity</span><span class="version">v.$version</span>
+            <span class="title">Qunity</span><span class="version">$version</span>
         </div>
     </div>
 </body>
