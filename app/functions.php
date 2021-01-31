@@ -35,10 +35,10 @@ function welcome(): void
 
     if (PHP_SAPI == 'cli') {
         $line1 = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
-        $line2 = substr($line1, strlen($version) + 1);
+        $line2 = "\n " . substr($line1, strlen($version) + 1);
         $authors = ($authors != [] ? "\n (c) " . implode("\n     ", $authors) . "\n" : '') . "\n";
         print <<<EOD
-\n\e[33m $line1\e[32m
+\n\e[33m $line1\e[32m 
     _____  _     _ __   _ _____ _______ __   __   
    |   __| |     | | \  |   |      |      \_/     
    |____\| |_____| |  \_| __|__    |       |      
