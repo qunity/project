@@ -11,10 +11,12 @@
 
 /**
  * Initialization
+ * @SuppressWarnings(Superglobals)
  */
 function init(): void
 {
     define('BASE_DIR', realpath(__DIR__ . '/../'));
+    define('BASE_URL', PHP_SAPI != 'cli' ? $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] : null);
 
     $composer = json_decode(file_get_contents(BASE_DIR . '/composer.json'), true);
     define('PROJECT_VERSION', $composer['version'] ?? null);
@@ -28,71 +30,47 @@ function init(): void
  */
 function welcome(): void
 {
-    $version = 'v.' . (PROJECT_VERSION != null ? PROJECT_VERSION : 'dev');
-    $authors = array_diff(array_map(function (array $author): string {
-        return implode(' ', $author);
-    }, PROJECT_AUTHORS), ['']);
+    $data = new StdClass();
 
     if (PHP_SAPI == 'cli') {
-        $line1 = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
-        $line2 = "\n " . substr($line1, strlen($version) + 1);
-        $authors = ($authors != [] ? "\n (c) " . implode("\n     ", $authors) . "\n" : '') . "\n";
-        print <<<EOD
-\n\e[33m $line1\e[32m 
-    _____  _     _ __   _ _____ _______ __   __   
-   |   __| |     | | \  |   |      |      \_/     
-   |____\| |_____| |  \_| __|__    |       |      
-\e[33m $line2\e[37m $version 
-\e[37m $authors
-EOD;
+        if (!empty(PROJECT_VERSION)) {
+            $data->version = "\n\e[2;37m version: " . PROJECT_VERSION . "\e[0m";
+        }
+
+        if (!empty(PROJECT_AUTHORS)) {
+            $data->authors = "\n\e[2;37m authors: (c) " .
+                implode(
+                    "\n" . str_repeat(' ', 14),
+                    array_map(function (array $author): string {
+                        return implode(' ', $author);
+                    }, PROJECT_AUTHORS)
+                ) . "\e[0m";
+        }
+
+        print "\n \e[1;2;4;32m   Q U N I T Y   \e[0m\n" .
+            ($data->version ?? '') .
+            ($data->authors ?? '') .
+            "\n" . ((array)$data != [] ? "\n" : '');
     } else {
-        $authors = $authors != [] ? '(c) ' . implode(', ', $authors) : '-';
-        print <<<HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Welcome</title>
-    <meta name="author" content="$authors">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
+        if (!empty(PROJECT_VERSION)) {
+            $data->version = 'v.' . PROJECT_VERSION;
         }
-        .wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
+
+        if (!empty(PROJECT_AUTHORS)) {
+            $data->authors = '(c) ' .
+                implode(
+                    '<br>',
+                    array_map(function (array $author): string {
+                        return implode(' ', $author);
+                    }, PROJECT_AUTHORS)
+                );
         }
-        .wrapper .welcome {
-            font: 76px Verdana, Geneva, sans-serif;
-            font-weight: bold;
-            border: 7px solid #707070;
-            border-left-style: none;
-            border-right-style: none;
-        }
-        .wrapper .title {
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            color: #505050;
-        }
-        .wrapper .version {
-            font-size: 12px;
-            vertical-align: sub;
-            color: #707070;
-        }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <div class="welcome">
-            <span class="title">Qunity</span><span class="version">$version</span>
-        </div>
-    </div>
-</body>
-</html>
-HTML;
+
+        $config = new StdClass();
+        $config->style = BASE_URL . '/static/style/welcome.css';
+        $config->script = BASE_URL . '/static/script/welcome.js';
+
+        include BASE_DIR . '/app/template/welcome.phtml';
     }
 }
 

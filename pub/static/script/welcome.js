@@ -1,6 +1,3 @@
-#!/usr/bin/env php
-<?php
-
 /**
  * This file is part of the Qunity package.
  *
@@ -10,8 +7,7 @@
  * file that was distributed with this source code.
  */
 
-/**
- * CLI application entry point
- */
-
-require_once __DIR__ . '/../app/bootstrap.php';
+$(function () {
+    $('.title').fadeIn(1000);
+    $('.info').fadeIn(1500);
+});
