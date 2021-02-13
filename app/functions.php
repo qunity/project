@@ -11,7 +11,6 @@
 
 /**
  * Initialization
- * @SuppressWarnings(Superglobals)
  */
 function init(): void
 {
