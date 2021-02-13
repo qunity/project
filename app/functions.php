@@ -16,11 +16,11 @@
 function init(): void
 {
     define('BASE_DIR', realpath(__DIR__ . '/../'));
-    define('BASE_URL', PHP_SAPI != 'cli' ? $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] : null);
 
     $composer = json_decode(file_get_contents(BASE_DIR . '/composer.json'), true);
     define('PROJECT_VERSION', $composer['version'] ?? null);
     define('PROJECT_AUTHORS', $composer['authors'] ?? []);
+    define('PROJECT_TIME', $composer['time'] ?? null);
 
     define('PROJECT_MODE', getenv('PROJECT_MODE'));
 }
@@ -30,47 +30,75 @@ function init(): void
  */
 function welcome(): void
 {
-    $data = new StdClass();
-
     if (PHP_SAPI == 'cli') {
-        if (!empty(PROJECT_VERSION)) {
-            $data->version = "\n\e[2;37m version: " . PROJECT_VERSION . "\e[0m";
-        }
-
-        if (!empty(PROJECT_AUTHORS)) {
-            $data->authors = "\n\e[2;37m authors: (c) " .
-                implode(
-                    "\n" . str_repeat(' ', 14),
-                    array_map(function (array $author): string {
-                        return implode(' ', $author);
-                    }, PROJECT_AUTHORS)
-                ) . "\e[0m";
-        }
-
-        print "\n \e[1;2;4;32m   Q U N I T Y   \e[0m\n" .
-            ($data->version ?? '') .
-            ($data->authors ?? '') .
-            "\n" . ((array)$data != [] ? "\n" : '');
+        $info = (PROJECT_VERSION != null ? " version \e[33m" . PROJECT_VERSION . "\e[0m" : '') .
+            (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '');
+        print "\e[32mQunity\e[0m" . ($info ?: ' Welcome') . "\n";
     } else {
-        if (!empty(PROJECT_VERSION)) {
-            $data->version = 'v.' . PROJECT_VERSION;
+        $info = (PROJECT_VERSION != null ? 'v.' . PROJECT_VERSION : '') .
+            (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '');
+        print preg_replace(
+            ['%>(\s)+%s', '%(\s)+<%s', '%(\s)+%s'],
+            ['>', '<', "$1"],
+            <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Qunity Welcome</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"></script>
+    <link href="http://fonts.cdnfonts.com/css/spac3-halftone" rel="stylesheet">
+    <link href="http://fonts.cdnfonts.com/css/itim" rel="stylesheet">
+    <style>
+        * {
+            -webkit-touch-callout: none;
+              -webkit-user-select: none;
+               -khtml-user-select: none;
+                 -moz-user-select: none;
+                  -ms-user-select: none;
+                      user-select: none;
         }
-
-        if (!empty(PROJECT_AUTHORS)) {
-            $data->authors = '(c) ' .
-                implode(
-                    '<br>',
-                    array_map(function (array $author): string {
-                        return implode(' ', $author);
-                    }, PROJECT_AUTHORS)
-                );
+        html, body {
+            height: 100%;
+            cursor: default;
         }
-
-        $config = new StdClass();
-        $config->style = BASE_URL . '/static/style/welcome.css';
-        $config->script = BASE_URL . '/static/script/welcome.js';
-
-        include BASE_DIR . '/app/template/welcome.phtml';
+        .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 70%;
+        }
+        .welcome .title {
+            opacity: 0;
+            text-transform: uppercase;
+            font: 92px 'Spac3 halftone', sans-serif;
+            color: #808080;
+        }
+        .welcome .info {
+            opacity: 0;
+            text-align: center;
+            font: 12px 'Itim', sans-serif;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="welcome">
+        <div class="title">q&nbsp;u&nbsp;n&nbsp;i&nbsp;t&nbsp;y</div>
+        <div class="info">${info}</div>
+        <script>
+            $(function () {
+                $(".title").fadeTo(150, 1).next(".info").delay(750).fadeTo("slow", 1);
+            });
+        </script>
+    </div>
+</body>
+</html>
+HTML
+        );
     }
 }
 
