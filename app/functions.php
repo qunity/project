@@ -76,13 +76,13 @@ function welcome(): void
         }
         .title {
             text-transform: uppercase;
-            font-size: 112px;
+            font-size: 98px;
             color: #808080;
         }
         .info {
             margin-top: 25px;
             text-align: center;
-            font-size: 9px;
+            font-size: 12px;
             color: #ccc;
         }
     </style>
