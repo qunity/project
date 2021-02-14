@@ -49,7 +49,6 @@ function welcome(): void
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"></script>
     <link href="http://fonts.cdnfonts.com/css/trivial" rel="stylesheet">
-    <link href="http://fonts.cdnfonts.com/css/itim" rel="stylesheet">
     <style>
         * {
             -webkit-touch-callout: none;
@@ -70,17 +69,20 @@ function welcome(): void
             justify-content: center;
             height: 70%;
         }
-        .welcome .title {
+        .welcome > div {
             opacity: 0;
+            font-family: 'Trivial', sans-serif;
+            font-weight: bold;
+        }
+        .title {
             text-transform: uppercase;
-            font: bold 112px 'Trivial', sans-serif;
+            font-size: 112px;
             color: #808080;
         }
-        .welcome .info {
-            opacity: 0;
+        .info {
             margin-top: 25px;
             text-align: center;
-            font: 12px 'Itim', sans-serif;
+            font-size: 9px;
             color: #ccc;
         }
     </style>
