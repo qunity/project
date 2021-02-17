@@ -91,7 +91,7 @@ function welcome(): void
 <div class="wrapper">
     <div class="welcome">
         <div class="title">q&nbsp;u&nbsp;n&nbsp;i&nbsp;t&nbsp;y</div>
-        <div class="info">${info}</div>
+        <div class="info">{$info}</div>
         <script>
             $(function () {
                 $(".title").fadeTo(200, 1).next(".info").delay(750).fadeTo("slow", 1);
