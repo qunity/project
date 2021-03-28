@@ -37,7 +37,7 @@ function welcome(): void
         $info = (PROJECT_VERSION != null ? 'v.' . PROJECT_VERSION : '') .
             (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '');
         print preg_replace(
-            ['%(\s)*>(\s)+%s', '%(\s)+<(\s)*%s', '%(\s)+%s'],
+            ['%>(\s)+%s', '%(\s)+<%s', '%(\s)+%s'],
             ['>', '<', '\\1'],
             <<<HTML
 <!DOCTYPE html>
