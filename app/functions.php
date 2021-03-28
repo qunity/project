@@ -16,7 +16,10 @@ function init(): void
 {
     define('BASE_DIR', realpath(__DIR__ . '/../'));
 
-    $composer = json_decode(file_get_contents(BASE_DIR . '/composer.json'), true);
+    if ($composer = file_get_contents(BASE_DIR . '/composer.json')) {
+        $composer = json_decode($composer, true);
+    }
+
     define('PROJECT_VERSION', $composer['version'] ?? null);
     define('PROJECT_AUTHORS', $composer['authors'] ?? []);
     define('PROJECT_TIME', $composer['time'] ?? null);
