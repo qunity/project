@@ -16,10 +16,7 @@ function init(): void
 {
     define('BASE_DIR', realpath(__DIR__ . '/../'));
 
-    if ($composer = file_get_contents(BASE_DIR . '/composer.json')) {
-        $composer = json_decode($composer, true);
-    }
-
+    $composer = json_decode((string)file_get_contents(BASE_DIR . '/composer.json'), true);
     define('PROJECT_VERSION', $composer['version'] ?? null);
     define('PROJECT_AUTHORS', $composer['authors'] ?? []);
     define('PROJECT_TIME', $composer['time'] ?? null);
@@ -40,8 +37,8 @@ function welcome(): void
         $info = (PROJECT_VERSION != null ? 'v.' . PROJECT_VERSION : '') .
             (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '');
         print preg_replace(
-            ['%>(\s)+%s', '%(\s)+<%s', '%(\s)+%s'],
-            ['>', '<', "$1"],
+            ['%(\s)*>(\s)+%s', '%(\s)+<(\s)*%s', '%(\s)+%s'],
+            ['>', '<', '\\1'],
             <<<HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +93,7 @@ function welcome(): void
         <div class="info">{$info}</div>
         <script>
             $(function () {
-                $(".title").fadeTo(200, 1).next(".info").delay(750).fadeTo("slow", 1);
+                $('.title').fadeTo(250, 1).next('.info').delay(750).fadeTo('slow', 1);
             });
         </script>
     </div>
