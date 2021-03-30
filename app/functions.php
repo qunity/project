@@ -66,7 +66,7 @@ function welcome(): void
                   -ms-user-select: none;
                       user-select: none;
         }
-        html, body {
+        html,body {
             height: 100%;
             margin: 0;
             cursor: default;
@@ -77,7 +77,7 @@ function welcome(): void
             justify-content: center;
             height: 75%;
         }
-        .welcome > div {
+        .welcome>div {
             opacity: 0;
             text-align: center;
             line-height: 1.2em;
