@@ -72,7 +72,7 @@ function welcome(): void
             margin: 0;
             cursor: default;
         }
-        .wrapper {
+        #wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -96,7 +96,7 @@ function welcome(): void
     </style>
 </head>
 <body>
-    <div class="wrapper">
+    <div id="wrapper">
         <div id="welcome">
             <div id="project">{$project}</div>
             <div id="info">{$info}</div>
