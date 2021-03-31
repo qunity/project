@@ -29,14 +29,15 @@ function init(): void
  */
 function welcome(): void
 {
-    $project = PROJECT_NAME;
     if (PHP_SAPI == 'cli') {
         $info = ((PROJECT_VERSION != null ? " version \e[33m" . PROJECT_VERSION . "\e[0m" : '') .
             (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '')) ?: ' Welcome';
-        $content = "\e[32m" . $project . "\e[0m" . $info . "\n";
+        $content = "\e[32m" . PROJECT_NAME . "\e[0m" . $info . "\n";
     } else {
+        $title = PROJECT_NAME;
+        $project = implode('&nbsp;', str_split(strtoupper(PROJECT_NAME)));
         $info = ((PROJECT_VERSION != null ? 'v.' . PROJECT_VERSION : '') .
-            (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '')) ?: 'welcome';
+            (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '')) ?: 'WELCOME';
         $content = preg_replace(
             ['%>(\s)+%s', '%(\s)+<%s', '%(\s)+%s'],
             ['>', '<', '\\1'],
@@ -45,7 +46,7 @@ function welcome(): void
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{$project}</title>
+    <title>{$title}</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" href="data:,">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -77,20 +78,16 @@ function welcome(): void
             justify-content: center;
             height: 75%;
         }
-        .welcome>* {
+        #welcome>* {
             text-align: center;
             line-height: 1.2em;
             font-family: 'Jost', sans-serif;
         }
-        .title {
-            text-transform: uppercase;
-            letter-spacing: 0.6em;
-            word-spacing: 0.2em;
+        #project {
             font-size: 5em;
             color: #999;
         }
-        .info {
-            text-transform: lowercase;
+        #info {
             letter-spacing: 0.1em;
             word-spacing: 0.5em;
             font-size: 0.8em;
@@ -100,13 +97,13 @@ function welcome(): void
 </head>
 <body>
     <div class="wrapper">
-        <div class="welcome">
-            <div class="title">{$project}</div>
-            <div class="info">{$info}</div>
+        <div id="welcome">
+            <div id="project">{$project}</div>
+            <div id="info">{$info}</div>
             <script>
                 $(function () {
-                    $('.title').css('opacity', 0).fadeTo(250, 1);
-                    $('.info').css('opacity', 0).delay(750).fadeTo('slow', 1);
+                    $('#project').css('opacity', 0).fadeTo(250, 1);
+                    $('#info').css('opacity', 0).delay(750).fadeTo('slow', 1);
                 });
             </script>
         </div>
