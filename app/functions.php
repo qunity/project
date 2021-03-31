@@ -78,8 +78,7 @@ function welcome(): void
             justify-content: center;
             height: 75%;
         }
-        .welcome>div {
-            opacity: 0;
+        .welcome>* {
             text-align: center;
             line-height: 1.2em;
             font-family: 'Jost', sans-serif;
@@ -107,7 +106,8 @@ function welcome(): void
             <div class="info">{$info}</div>
             <script>
                 $(function () {
-                    $('.title').fadeTo(250, 1).next('.info').delay(750).fadeTo('slow', 1);
+                    $('.title').css('opacity', 0).fadeTo(250, 1);
+                    $('.info').css('opacity', 0).delay(750).fadeTo('slow', 1);
                 });
             </script>
         </div>
