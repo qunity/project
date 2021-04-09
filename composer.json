@@ -3,7 +3,7 @@
   "description": "Qunity Project",
   "type": "project",
   "version": "1.0.0",
-  "time": "2021-03-30",
+  "time": "2021-04-10",
   "license": "MIT",
   "authors": [
     {
@@ -37,7 +37,7 @@
   "autoload-dev": {
     "psr-4": {
       "": [
-        "dev/test/unit"
+        "dev/tests/unit"
       ]
     },
     "files": [

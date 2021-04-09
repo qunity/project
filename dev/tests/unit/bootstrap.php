@@ -14,4 +14,4 @@
  */
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-require_files(__DIR__ . '/../../code/*/*/test/autoload.php');
+require_files(__DIR__ . '/../../code/*/*/tests/autoload.php');

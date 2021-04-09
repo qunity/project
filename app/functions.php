@@ -46,7 +46,7 @@ function welcome(): void
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{$title}</title>
+    <title>$title</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" href="data:,">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -98,8 +98,8 @@ function welcome(): void
 <body>
     <div id="wrapper">
         <div id="welcome">
-            <div id="project">{$project}</div>
-            <div id="info">{$info}</div>
+            <div id="project">$project</div>
+            <div id="info">$info</div>
             <script>
                 $(function () {
                     $('#project').css('opacity', 0).fadeTo(250, 1);
@@ -124,6 +124,7 @@ function require_files(string $pattern): void
 {
     if ($paths = glob($pattern, GLOB_NOSORT)) {
         array_walk($paths, function (string $path): void {
+            /** @noinspection PhpIncludeInspection */
             require $path;
         });
     }

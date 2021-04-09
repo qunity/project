@@ -15,7 +15,7 @@
          cacheResult="false">
     <testsuites>
         <testsuite name="packages">
-            <directory>./../../code/*/*/test</directory>
+            <directory>./../../code/*/*/tests</directory>
         </testsuite>
         <testsuite name="custom">
             <directory>.</directory>
