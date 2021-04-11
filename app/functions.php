@@ -35,7 +35,7 @@ function welcome(): void
         $content = "\e[32m" . PROJECT_NAME . "\e[0m" . $info . "\n";
     } else {
         $title = PROJECT_NAME;
-        $project = implode('&nbsp;', str_split(strtoupper(PROJECT_NAME)));
+        $project = implode('&ensp;', str_split(strtoupper(PROJECT_NAME)));
         $info = ((PROJECT_VERSION != null ? 'v.' . PROJECT_VERSION : '') .
             (PROJECT_TIME != null ? ' ' . PROJECT_TIME : '')) ?: 'WELCOME';
         $content = preg_replace(
