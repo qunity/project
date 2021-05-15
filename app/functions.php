@@ -14,13 +14,21 @@
  */
 function init(): void
 {
+    /** Project base directory */
     define('BASE_DIR', realpath(__DIR__ . '/../'));
 
     $composer = json_decode((string)file_get_contents(BASE_DIR . '/composer.json'), true);
+
+    /** Project release version */
     define('PROJECT_VERSION', $composer['version'] ?? null);
+
+    /** Project release time */
     define('PROJECT_TIME', $composer['time'] ?? null);
 
+    /** Project name */
     define('PROJECT_NAME', (string)getenv('PROJECT_NAME'));
+
+    /** Project mode (production|development) */
     define('PROJECT_MODE', (string)getenv('PROJECT_MODE'));
 }
 
