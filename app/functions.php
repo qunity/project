@@ -131,9 +131,12 @@ HTML
 function require_files(string $pattern): void
 {
     if ($paths = glob($pattern, GLOB_NOSORT)) {
-        array_walk($paths, function (string $path): void {
-            /** @noinspection PhpIncludeInspection */
-            require $path;
-        });
+        array_walk(
+            $paths,
+            function (string $path): void {
+                /** @noinspection PhpIncludeInspection */
+                require $path;
+            }
+        );
     }
 }
