@@ -56,7 +56,6 @@ function welcome(): void
     <meta charset="utf-8">
     <title>$title</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" href="data:,">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
