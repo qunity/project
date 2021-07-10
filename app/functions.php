@@ -64,7 +64,7 @@ function welcome(): void
         html, body { height: 100%; margin: 0; cursor: default; }
         #wrapper { display: flex; align-items: center; justify-content: center; height: 80%; }
         #welcome > * { text-align: center; }
-        #project { font-size: 3em; font-family: 'Wallpoet', cursive; color: #999; }
+        #project { font-size: 3em; font-family: 'Wallpoet', sans-serif; color: #999; }
         #info { letter-spacing: 0.1em; word-spacing: 0.5em; font-family: sans-serif; font-size: 0.6em; color: #ccc; }
     </style>
 </head>
