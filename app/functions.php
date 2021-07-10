@@ -50,7 +50,7 @@ function welcome(): void
         print preg_replace(
             ['%>(\s)+%s', '%(\s)+<%s', '%(\s)+%s'],
             ['>', '<', '\\1'],
-            <<<EOL
+            <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +80,7 @@ function welcome(): void
 </div>
 </body>
 </html>
-EOL
+HTML
         );
     }
 }
