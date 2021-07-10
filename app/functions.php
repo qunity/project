@@ -55,7 +55,6 @@ function welcome(): void
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Cache-control" content="public">
     <title>$data->title</title>
     <link rel="shortcut icon" href="data:image/svg+xml;base64,
 PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjQ4cHgiIHZp
