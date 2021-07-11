@@ -73,11 +73,11 @@ Zz4KPC9zdmc+Cg=="/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
-        @import url(https://fonts.googleapis.com/css2?family=Wallpoet&display=swap);
+        @import url(https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap);
         html,body { height: 100%; margin: 0; cursor: default; }
         #wrapper { display: flex; align-items: center; justify-content: center; height: 80%; }
         #welcome>* { text-align: center; }
-        #project { font-size: 3em; font-family: Wallpoet, sans-serif; color: #999; }
+        #project { font-size: 3em; font-family: 'Julius Sans One', sans-serif; color: #999; }
         #info { letter-spacing: 0.1em; word-spacing: 0.5em; font-family: sans-serif; font-size: 0.6em; color: #ccc; }
     </style>
 </head>
