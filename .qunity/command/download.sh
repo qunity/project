@@ -20,6 +20,16 @@ $(color 33 "Options:")
 
 # Execute command
 function execute() {
+  if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then
+    QUESTION_MESSAGE="Are you sure you want to remove existing project directories (Y/n): "
+
+    while read -r -n 1 -p "$QUESTION_MESSAGE" ANSWER; do
+      case "$ANSWER" in
+        N|n) echo; error "Execution aborted by user"; return 1 ;; Y|y) echo; break ;; *) echo ;;
+      esac
+    done
+  fi
+
   while IFS=' ' read -r REPOSITORY RELATIVEPATH; do
     if [[ -z "$REPOSITORY" || -z "$RELATIVEPATH" ]]; then continue; fi
 
