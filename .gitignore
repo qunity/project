@@ -1,4 +1,7 @@
 /.idea
 
+/.qunity/replace/*
+!/.qunity/replace/.gitkeep
+
 /magento/*
-/pwa/*
+/magento-pwa/*

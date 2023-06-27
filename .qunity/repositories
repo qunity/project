@@ -1,0 +1,3 @@
+git@github.com:qunity/magento.git ./magento
+git@github.com:qunity/module-base.git ./magento/packages/qunity/module-base
+git@github.com:qunity/module-upward-connector.git ./magento/packages/qunity/module-upward-connector
