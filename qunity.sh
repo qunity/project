@@ -27,12 +27,12 @@ function print() {
 
 # Save failure message of result
 function error() {
-  export RESULT_MESSAGE="ERROR: $1"; return 1
+  export RESULT_MESSAGE="ERROR: ${1}"; return 1
 }
 
 # Save information message of result
 function info() {
-  export RESULT_MESSAGE="INFO: $1"; return 0
+  export RESULT_MESSAGE="INFO: ${1}"; return 0
 }
 
 # Display main help
@@ -46,13 +46,13 @@ $(color 33 "Options:")
     -h, --help\t\t- Display this help menu
 
 $(color 33 "Commands:")
-$(while IFS=' ' read -r COMMAND_FILE; do
-  local COMMAND="${COMMAND_FILE%".sh"}"
-  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND_FILE}"
+    $(while IFS=' ' read -r COMMAND_FILE; do
+      local COMMAND="${COMMAND_FILE%".sh"}"
+      local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND_FILE}"
 
-  # shellcheck source=/.qunity/command/*.sh
-  source "$COMMAND_FILE"; echo -e "    ${COMMAND}\t\t- $(description)"
-done < <(ls "${QUNITY_DIR}/command"))"
+      # shellcheck source=/.qunity/command/*.sh
+      source "$COMMAND_FILE"; echo -e "    ${COMMAND}\t\t- $(description)"
+    done < <(ls "${QUNITY_DIR}/command"))"
 }
 
 # Execute callback function
@@ -69,14 +69,14 @@ function start() {
   if [[ -f "$COMMAND_FILE" ]]; then source "$COMMAND_FILE"; unset 'COMMAND[0]'; fi
 
   local FUNCTION=execute; for PARAMETER in "${COMMAND[@]}"; do
-    if [[ "$PARAMETER" == '-h' || "$PARAMETER" == '--help' ]]; then FUNCTION=help; fi
+    if [[ "$PARAMETER" == '-h' || "$PARAMETER" == '--help' ]]; then FUNCTION=help; break; fi
   done
 
   if [[ $# -eq 0 || "$FUNCTION" == help ]]; then help; return 0; fi
 
   print "INFO: Start '${START_MESSAGE[*]}'" 32; if execute "${COMMAND[@]}"
     then print "${RESULT_MESSAGE="INFO: Success"}" 32
-    else print "${RESULT_MESSAGE="ERROR: Unknown"}" 31
+    else print "${RESULT_MESSAGE="ERROR: Unknown error"}" 31
   fi
 }
 
