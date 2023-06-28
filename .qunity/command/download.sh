@@ -21,11 +21,12 @@ $(color 33 "Options:")
 # Execute command
 function execute() {
   if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then
-    QUESTION_MESSAGE="Are you sure you want to remove existing project directories (Y/n): "
+    echo -e "WARNING: Existing project directories will be removed.\n" \
+      "\t Are you sure you want to continue in forced mode?"
 
-    while read -r -n 1 -p "$QUESTION_MESSAGE" ANSWER; do
+    select ANSWER in 'Yes' 'No'; do
       case "$ANSWER" in
-        N|n) echo; error "Execution aborted by user"; return 1 ;; Y|y) echo; break ;; *) echo ;;
+        Yes) break ;; No) error "Execution aborted by user"; return 1 ;;
       esac
     done
   fi
