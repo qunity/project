@@ -47,11 +47,11 @@ $(color 33 "Options:")
 
 $(color 33 "Commands:")
     $(while IFS=' ' read -r COMMAND_FILE; do
-      local COMMAND="${COMMAND_FILE%".sh"}"
+      local COMMAND_NAME="${COMMAND_FILE%".sh"}"
       local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND_FILE}"
 
-      # shellcheck source=/.qunity/command/*.sh
-      source "$COMMAND_FILE"; echo -e "    ${COMMAND}\t\t- $(description)"
+      # shellcheck source=./.qunity/command/*.sh
+      source "$COMMAND_FILE"; echo -e "    ${COMMAND_NAME}\t\t- $(description)"
     done < <(ls "${QUNITY_DIR}/command"))"
 }
 
@@ -65,7 +65,7 @@ function start() {
   local COMMAND=( "$@" ) START_MESSAGE=( "$@" )
   local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-"unexist"}.sh"
 
-  # shellcheck source=/.qunity/command/*.sh
+  # shellcheck source=./.qunity/command/*.sh
   if [[ -f "$COMMAND_FILE" ]]; then source "$COMMAND_FILE"; unset 'COMMAND[0]'; fi
 
   local FUNCTION=execute; for PARAMETER in "${COMMAND[@]}"; do
