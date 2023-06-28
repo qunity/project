@@ -19,7 +19,7 @@ $(color 33 "Options:")
 }
 
 # Execute command
-function execute() {
+function download() {
   if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then
     echo -e "WARNING: Existing project directories will be removed.\n" \
       "\t Are you sure you want to continue in forced mode?"

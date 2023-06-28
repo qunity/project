@@ -28,6 +28,12 @@ services:
         read_only: true
         bind:
           create_host_path: true
+      - type: bind
+        source: ./qunity.sh
+        target: /var/www/html/qunity.sh
+        read_only: true
+        bind:
+          create_host_path: true
   php-fpm:
     environment:
       - NODE_ENV=production
@@ -54,6 +60,12 @@ services:
       - type: bind
         source: ${HOME}/.warden/ssl/certs/${TRAEFIK_DOMAIN}.crt.pem
         target: /etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.crt.pem
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: ./qunity.sh
+        target: /var/www/html/qunity.sh
         read_only: true
         bind:
           create_host_path: true

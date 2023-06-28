@@ -3,5 +3,8 @@
 /.qunity/replace/*
 !/.qunity/replace/.gitkeep
 
+/.qunity/replace/magento/*
+!/.qunity/replace/magento/.qunity
+
 /magento/*
 /magento-pwa/*
