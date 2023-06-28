@@ -51,7 +51,7 @@ $(color 33 "Commands:")
       local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND_FILE}"
 
       # shellcheck source=./.qunity/command/*.sh
-      source "$COMMAND_FILE"; echo -e "    ${COMMAND_NAME}\t\t- $(description)"
+      source "$COMMAND_FILE"; echo -e "${COMMAND_NAME}\t\t- $(description)"
     done < <(ls "${QUNITY_DIR}/command"))"
 }
 
