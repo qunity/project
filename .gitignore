@@ -6,5 +6,5 @@
 /.qunity/replace/magento/*
 !/.qunity/replace/magento/.qunity
 
-/magento/*
-/magento-pwa/*
+/magento
+/magento-pwa
