@@ -29,7 +29,7 @@ function color() {
 
 # Print script message
 function print() {
-  echo -e "$(date +'%T') $(color "${2-0}" "$(ucfirst "$1")")"
+  echo -e "$(date +'%T') $(color "${2-"0"}" "$(ucfirst "$1")")"
 }
 
 # Save failure message of result
