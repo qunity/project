@@ -12,6 +12,11 @@ readonly ENV_FILE="${BASE_DIR}/.env"
 # shellcheck source=./.env
 if [[ -f "$ENV_FILE" ]]; then source "$ENV_FILE"; fi
 
+# Get random string
+function random() {
+  echo "$RANDOM" | md5sum | head -c 20
+}
+
 # Change first letter to upper
 function ucfirst() {
   echo -n "${1:0:1}" | tr '[:lower:]' '[:upper:]'; echo "${1:1}"
@@ -59,7 +64,7 @@ done < <(ls "${QUNITY_DIR}/command"))"
 # Execute command
 function execute() {
   local COMMAND=( "$@" )
-  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-'*'}.sh"
+  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-"$(random)"}.sh"
 
   # shellcheck source=./.qunity/command/*.sh
   if [[ -f "$COMMAND_FILE" ]]; then source "$COMMAND_FILE"; fi

@@ -38,4 +38,6 @@ function install() {
   if ! "$PHP" "$MAGENTO" setup:install; then
     error "Failed to install Magento 2 application"; return 1
   fi
+
+  info "Magento 2 website installation completed"
 }
