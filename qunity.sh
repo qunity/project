@@ -82,7 +82,7 @@ function execute() {
   print "INFO: Start '${COMMAND[*]}'" 32;
 
   if ( "${COMMAND[@]}" ); then
-    print "${RESULT_MESSAGE="INFO: Successful '${COMMAND[*]}'"}" 32
+    print "${RESULT_MESSAGE="INFO: Success '${COMMAND[*]}'"}" 32
   else
     print "${RESULT_MESSAGE="ERROR: ${COMMAND[*]}"}" 31
   fi
