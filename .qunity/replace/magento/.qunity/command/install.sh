@@ -28,12 +28,12 @@ function install() {
   readonly COMPOSER="/usr/bin/composer"
   readonly MAGENTO="${BASE_DIR}/bin/magento"
 
-  print "Start install Composer packages" 31
+  print "Start install Composer packages" 32
   if ! "$COMPOSER" install "$@"; then
     error "Failed to install Composer packages"; return 1
   fi
 
-  print "Start install Magento 2 application" 31
+  print "Start install Magento 2 application" 32
   if ! "$PHP" "$MAGENTO" setup:install; then
     error "Failed to install Magento 2 application"; return 1
   fi

@@ -79,12 +79,12 @@ function execute() {
     help; return 0
   fi
 
-  print "INFO: Start $(color 0 "\`${COMMAND[*]}\`")" 32;
+  print "INFO: Start execution" 32;
 
   if "${COMMAND[@]}"; then
     print "${RESULT_MESSAGE="INFO: Success"}" 32
   else
-    print "${RESULT_MESSAGE="ERROR: $(color 0 "\`${COMMAND[*]}\`")"}" 31
+    print "${RESULT_MESSAGE="ERROR: Runtime error"}" 31
   fi
 }
 
