@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
+# Display name
+function name() {
+  echo "download"
+}
+
 # Display description
 function description() {
-  echo "Downloads repositories from list repositories file"
+  echo "Project repositories downloads"
 }
 
 # Display help information
 function help() {
-  echo -e "$(color 32 "$(description)")
+  echo -e "$(color 32 "Command '$(name)'")
+$(description)
 
 $(color 33 "Usage:")
     command [options]

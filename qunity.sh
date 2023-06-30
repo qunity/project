@@ -3,7 +3,7 @@
 set -o nounset
 set -o errexit
 
-readonly SCRIPT_VERSION="v0.1.1-dev"
+readonly SCRIPT_VERSION="v0.1.2-dev"
 
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
@@ -49,19 +49,17 @@ $(color 33 "Options:")
 
 $(color 33 "Commands:")
 $(while IFS=' ' read -r COMMAND_FILE; do
-  local COMMAND_NAME="${COMMAND_FILE%".sh"}"
-  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND_FILE}"
-
   # shellcheck source=./.qunity/command/*.sh
-  source "$COMMAND_FILE"
-  echo -e "    ${COMMAND_NAME}\t\t- $(description)"
+  source "${QUNITY_DIR}/command/${COMMAND_FILE}"
+
+  echo -e "    $(name)\t\t- $(description)"
 done < <(ls "${QUNITY_DIR}/command"))"
 }
 
 # Execute command
 function execute() {
   local COMMAND=( "$@" )
-  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-}.sh"
+  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-'*'}.sh"
 
   # shellcheck source=./.qunity/command/*.sh
   if [[ -f "$COMMAND_FILE" ]]; then source "$COMMAND_FILE"; fi
@@ -79,7 +77,7 @@ function execute() {
   print "INFO: Start '${COMMAND[*]}'" 32;
 
   if ( "${COMMAND[@]}" ); then
-    print "${RESULT_MESSAGE="INFO: Successful '${COMMAND[*]}"}'" 32
+    print "${RESULT_MESSAGE="INFO: Successful '${COMMAND[*]}'"}" 32
   else
     print "${RESULT_MESSAGE="ERROR: ${COMMAND[*]}"}" 31
   fi
