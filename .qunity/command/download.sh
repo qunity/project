@@ -12,8 +12,7 @@ function description() {
 
 # Display help information
 function help() {
-  echo -e "$(color 32 "Command '$(name)'")
-$(description)
+  echo -e "$(color 32 "$(description)")
 
 $(color 33 "Usage:")
     command [options]
@@ -21,18 +20,18 @@ $(color 33 "Usage:")
 $(color 33 "Options:")
     -h, --help\t\t- Display this help menu
     -f, --force\t\t- Forced download of repositories
-\t\t\t  WARNING: Will delete all previously unsaved data"
+\t\t\t  WARNING: It will delete all previously unsaved data"
 }
 
 # Execute command
 function download() {
   if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then
-    echo -e "WARNING: Existing project directories will be removed.\n" \
-      "\t Are you sure you want to continue in forced mode?"
+    echo -e "$(color 33 "WARNING:") Existing project directories will be removed.
+Are you sure you want to continue in forced mode?"
 
     select ANSWER in 'Yes' 'No'; do
       case "$ANSWER" in
-        Yes) break ;; No) error "Execution aborted by user"; return 1 ;;
+        Yes) break ;; No) info "Execution aborted"; return 0 ;;
       esac
     done
   fi
@@ -46,9 +45,22 @@ function download() {
     local DESTINATION_DIR
     DESTINATION_DIR="$(realpath --canonicalize-missing "${BASE_DIR}/${RELATIVEPATH}")"
 
-    if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then rm -rf "$DESTINATION_DIR"; fi
+    if [[ "${1-}" == '-f' || "${1-}" == '--force' ]]; then
+      if ! rm -rf "$DESTINATION_DIR"; then
+        error "Failed to remove directory: $(color 0 "$DESTINATION_DIR")"; return 1
+      fi
+    fi
 
-    git clone --single-branch "$REPOSITORY" "$DESTINATION_DIR"
-    if [[ -d "$REPLACE_DIR" ]]; then cp -r "$REPLACE_DIR" "$(dirname "$DESTINATION_DIR")"; fi
+    if ! git clone --single-branch "$REPOSITORY" "$DESTINATION_DIR"; then
+      error "Failed to clone repository:" \
+        "$(color 0 "${REPOSITORY} > ${DESTINATION_DIR}")"; return 1
+    fi
+
+    if [[ -d "$REPLACE_DIR" ]]; then
+      if ! cp -r "$REPLACE_DIR" "$(dirname "$DESTINATION_DIR")"; then
+        error "Failed to copy replacing directory:" \
+          "$(color 0 "${REPLACE_DIR} > ${DESTINATION_DIR}")"; return 1
+      fi
+    fi
   done < "${QUNITY_DIR}/repositories"
 }

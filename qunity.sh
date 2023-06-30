@@ -3,7 +3,7 @@
 set -o nounset
 set -o errexit
 
-readonly SCRIPT_VERSION="v0.1.2-dev"
+readonly SCRIPT_VERSION="v0.1.3-dev"
 
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
@@ -22,9 +22,9 @@ function ucfirst() {
   echo -n "${1:0:1}" | tr '[:lower:]' '[:upper:]'; echo "${1:1}"
 }
 
-# Wrap string to color
+# Wrap string(s) to color
 function color() {
-  echo "\033[${1}m${2}\033[0m"
+  echo "\033[${1}m${*:2}\033[0m"
 }
 
 # Print script message
@@ -34,12 +34,12 @@ function print() {
 
 # Save failure message of result
 function error() {
-  export RESULT_MESSAGE="ERROR: ${1}"; return 1
+  export RESULT_MESSAGE="ERROR: ${*}"; return 1
 }
 
 # Save information message of result
 function info() {
-  export RESULT_MESSAGE="INFO: ${1}"; return 0
+  export RESULT_MESSAGE="INFO: ${*}"; return 0
 }
 
 # Display main help
@@ -79,12 +79,12 @@ function execute() {
     help; return 0
   fi
 
-  print "INFO: Start '${COMMAND[*]}'" 32;
+  print "INFO: Start $(color 0 "\`${COMMAND[*]}\`")" 32;
 
-  if ( "${COMMAND[@]}" ); then
-    print "${RESULT_MESSAGE="INFO: Success '${COMMAND[*]}'"}" 32
+  if "${COMMAND[@]}"; then
+    print "${RESULT_MESSAGE="INFO: Success"}" 32
   else
-    print "${RESULT_MESSAGE="ERROR: ${COMMAND[*]}"}" 31
+    print "${RESULT_MESSAGE="ERROR: $(color 0 "\`${COMMAND[*]}\`")"}" 31
   fi
 }
 

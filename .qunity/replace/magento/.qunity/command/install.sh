@@ -12,14 +12,13 @@ function description() {
 
 # Display help information
 function help() {
-  echo -e "$(color 32 "Command '$(name)'")
-$(description)
+  echo -e "$(color 32 "$(description)")
 
 $(color 33 "Usage:")
     command [options]
 
 $(color 33 "Options:")
-    --no-dev\t\t- Disables installation of require-dev packages
+    --no-dev\t\t\t\t- Disables installation of require-dev packages
     -o, --optimize-autoloader\t\t- Optimize autoloader during autoloader dump"
 }
 
