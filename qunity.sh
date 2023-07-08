@@ -1,91 +1,47 @@
 #!/usr/bin/env bash
+# shellcheck source=./.qunity/[*/]*.sh; disable=SC2034,SC2016
 
-set -o nounset
-set -o errexit
+set -o nounset -o errexit
 
-readonly SCRIPT_VERSION="v0.1.3-dev"
-
+readonly VERSION="v1.0.0-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
-readonly ENV_FILE="${BASE_DIR}/.env"
 
-# shellcheck source=./.env
-if [[ -f "$ENV_FILE" ]]; then source "$ENV_FILE"; fi
+if [[ -f "${BASE_DIR}/.env" ]]; then source "${BASE_DIR}/.env"; fi
+if [[ -f "${QUNITY_DIR}/.env" ]]; then source "${QUNITY_DIR}/.env"; fi
 
-# Get random string
-function random() {
-  echo "$RANDOM" | md5sum | head -c 20
+color() { echo "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${*}"; }
+result() { RESULT="$*"; }; ?() { eval "$@"; }
+
+commands() { local FILE; while read -r FILE; do
+  source "$FILE"; printf "%${2-4}s${NAME}%$(( ${3-15} * -1 ))s - ${DESK}\n"
+done < <(ls "${QUNITY_DIR}/command/${1//":"/"/"}"/*.sh 2> /dev/null); }
+
+option() { local ARG; for ARG in "${@:2}"; do
+  if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then return 0; fi
+done; return 1; }
+
+load() { if [[ $# -eq 0 ]]; then local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${NAMES[@]}"; fi
+  local NAME; for NAME in "$@"; do if [[ -n "$NAME" ]]; then
+source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
+
+execute() { local ARGS=( "$@" ) EXEC=( "$@" ) CALL
+  TEMPLATE='if eval "@call"; then print "$(color 32 "${RESULT-"Success"}")"
+  else print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
+
+  print "$(color 32 "Start execution:") ${0} ${ARGS[*]}";
+  if ! load "command:${EXEC[0]-}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
+
+  if option "-h:--help" "${EXEC[@]}"; then EXEC[0]+="@help"; fi
+  if [[ $# -eq 0 || "${EXEC[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
+
+  if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"; fi
+  for CALL in "${EXEC[@]}"; do eval "${TEMPLATE/"@call"/"${CALL[@]}"}"; done
 }
 
-# Change first letter to upper
-function ucfirst() {
-  echo -n "${1:0:1}" | tr '[:lower:]' '[:upper:]'; echo "${1:1}"
-}
+HELP="$(color 32 "Qunity ${VERSION}")\n
+$(color 33 "Usage:")\n    command [options] [arguments]\n
+$(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
+$(color 33 "Commands:")\n$(commands "./")"
 
-# Wrap string(s) to color
-function color() {
-  echo "\033[${1}m${*:2}\033[0m"
-}
-
-# Print script message
-function print() {
-  echo -e "$(date +'%T') $(color "${2-"0"}" "$(ucfirst "$1")")"
-}
-
-# Save failure message of result
-function error() {
-  export RESULT_MESSAGE="ERROR: ${*}"; return 1
-}
-
-# Save information message of result
-function info() {
-  export RESULT_MESSAGE="INFO: ${*}"; return 0
-}
-
-# Display main help
-function help() {
-  echo -e "$(color 32 "Qunity ${SCRIPT_VERSION}")
-
-$(color 33 "Usage:")
-    command [options] [arguments]
-
-$(color 33 "Options:")
-    -h, --help\t\t- Display this help menu
-
-$(color 33 "Commands:")
-$(while IFS=' ' read -r COMMAND_FILE; do
-  # shellcheck source=./.qunity/command/*.sh
-  source "${QUNITY_DIR}/command/${COMMAND_FILE}"
-
-  echo -e "    $(name)\t\t- $(description)"
-done < <(ls "${QUNITY_DIR}/command"))"
-}
-
-# Execute command
-function execute() {
-  local COMMAND=( "$@" )
-  local COMMAND_FILE="${QUNITY_DIR}/command/${COMMAND[0]-"$(random)"}.sh"
-
-  # shellcheck source=./.qunity/command/*.sh
-  if [[ -f "$COMMAND_FILE" ]]; then source "$COMMAND_FILE"; fi
-
-  for PARAMETER in "${COMMAND[@]}"; do
-    if [[ "$PARAMETER" == '-h' || "$PARAMETER" == '--help' ]]; then
-      COMMAND[0]=help; break
-    fi
-  done
-
-  if [[ $# -eq 0 || "${COMMAND[0]}" == help ]]; then
-    help; return 0
-  fi
-
-  print "INFO: Start execution" 32;
-
-  if "${COMMAND[@]}"; then
-    print "${RESULT_MESSAGE="INFO: Success"}" 32
-  else
-    print "${RESULT_MESSAGE="ERROR: Runtime error"}" 31
-  fi
-}
-
-execute "${@:1}"
+execute "$@"
