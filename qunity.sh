@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.1.7-dev"
+readonly VERSION="v1.1.8-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -21,7 +21,8 @@ option() { local ARG; for ARG in "${@:2}"; do
   if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then return 0; fi
 done; return 1; }
 
-load() { if [[ $# -eq 0 ]]; then local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${NAMES[@]}"; fi
+load() { if [[ $# -eq 0 ]]; then
+  local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${NAMES[@]}"; return 0; fi
   local NAME; for NAME in "$@"; do if [[ -n "$NAME" ]]; then
 source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
 
