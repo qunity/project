@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.0.1-dev"
+readonly VERSION="v1.0.2-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -14,7 +14,7 @@ color() { echo "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${
 result() { RESULT="$*"; }; ?() { eval "$@"; }
 
 commands() { local FILE; while read -r FILE; do
-  source "$FILE"; printf "%${2-4}s${NAME}%$(( ${3-15} * -1 ))s - ${DESK}\n"
+  source "$FILE"; printf "%${2-4}s${NAME-"..."}%$(( ${3-19} * -1 ))s - ${DESK-"..."}\n"
 done < <(ls "${QUNITY_DIR}/command/${1//":"/"/"}"/*.sh 2> /dev/null); }
 
 option() { local ARG; for ARG in "${@:2}"; do
