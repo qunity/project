@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-load library:download
+load helper:download
 
 NAME="magento:download"
 DESK="Download Magento website"
