@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.0.0-dev"
+readonly VERSION="v1.0.1-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -25,17 +25,17 @@ load() { if [[ $# -eq 0 ]]; then local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${
   local NAME; for NAME in "$@"; do if [[ -n "$NAME" ]]; then
 source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
 
-execute() { local ARGS=( "$@" ) EXEC=( "$@" ) CALL
-  TEMPLATE='if eval "@call"; then print "$(color 32 "${RESULT-"Success"}")"
-  else print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
+execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if ! eval "@call"; then
+  print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
 
-  print "$(color 32 "Start execution:") ${0} ${ARGS[*]}";
   if ! load "command:${EXEC[0]-}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
 
   if option "-h:--help" "${EXEC[@]}"; then EXEC[0]+="@help"; fi
   if [[ $# -eq 0 || "${EXEC[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
 
   if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"; fi
+
+  print "$(color 32 "Execution:") ${0} ${ARGS[*]}"
   for CALL in "${EXEC[@]}"; do eval "${TEMPLATE/"@call"/"${CALL[@]}"}"; done
 }
 
