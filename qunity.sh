@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.0.2-dev"
+readonly VERSION="v1.0.3-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -14,7 +14,7 @@ color() { echo "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${
 result() { RESULT="$*"; }; ?() { eval "$@"; }
 
 commands() { local FILE; while read -r FILE; do
-  source "$FILE"; printf "%${2-4}s${NAME-"..."}%$(( ${3-19} * -1 ))s - ${DESK-"..."}\n"
+  source "$FILE"; printf "%${2-4}s%$(( ${3-20} * -1 ))s - %s\n" "" "${NAME-"?"}" "${DESK-"?"}"
 done < <(ls "${QUNITY_DIR}/command/${1//":"/"/"}"/*.sh 2> /dev/null); }
 
 option() { local ARG; for ARG in "${@:2}"; do
@@ -28,7 +28,7 @@ source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
 execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if ! eval "@call"; then
   print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
 
-  if ! load "command:${EXEC[0]-}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
+  if ! load "command:${EXEC[0]-"?"}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
 
   if option "-h:--help" "${EXEC[@]}"; then EXEC[0]+="@help"; fi
   if [[ $# -eq 0 || "${EXEC[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
