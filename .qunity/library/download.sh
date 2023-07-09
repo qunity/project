@@ -9,11 +9,11 @@ download() {
 
   print "$(color 32 "Downloading repository:") ${REPOSITORY}"
 
-  if [[ -d "$DESTINATION_DIR" ]] && ! option "-f:--force" "$@"; then
-    echo -e "$(color 33 "WARNING:") Existing project directories will be removed."
+  if [[ -d "$DESTINATION_DIR" ]] && option "-f:--force" "$@"; then
+    echo -e "$(color 33 "WARNING:") Directory will be removed: ${DESTINATION_DIR}"
 
     if ! question:yesno "Are you sure you want to continue?"; then
-      result "Execution aborted"; return 0
+      result "Downloading aborted"; return 0
     elif ! rm -rf "$DESTINATION_DIR"; then
       result "Failed to remove directory: $(color 0 "$DESTINATION_DIR")"; return 1
     fi
