@@ -11,7 +11,7 @@ if [[ -f "${BASE_DIR}/.env" ]]; then source "${BASE_DIR}/.env"; fi
 if [[ -f "${QUNITY_DIR}/.env" ]]; then source "${QUNITY_DIR}/.env"; fi
 
 color() { echo "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${*}"; }
-result() { RESULT="$*"; }; ?() { eval "$@"; }
+result() { RESULT="$*"; }; ?() { eval "$*"; }
 
 commands() { local FILE; while read -r FILE; do unset "NAME" "DESK"; source "$FILE"
   printf "%${2-4}s%$(( ${3-20} * -1 ))s - %s\n" "" "${NAME-"$(basename "$FILE")"}" "${DESK-"..."}"
@@ -29,10 +29,10 @@ execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if eval "@call"
   then print "$(color 32 "${RESULT-"Success"}")"
   else print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
 
-  if ! load "command:${ARGS[0]-"?"}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
+  if ! load "command:${ARGS[0]-}" 2> /dev/null; then EXEC=( "? ${EXEC[*]}" ); fi
 
-  if option "-h:--help" "${ARGS[@]}"; then EXEC[0]+="@help"; fi
-  if [[ $# -eq 0 || "${EXEC[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
+  if option "-h:--help" "${ARGS[@]}"; then ARGS[0]+="@help"; fi
+  if [[ $# -eq 0 || "${ARGS[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
 
   if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"
   else print "$(color 32 "Execution:") ${0} ${ARGS[*]}"; fi
