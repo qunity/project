@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.0.7-dev"
+readonly VERSION="v1.1.7-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -25,8 +25,9 @@ load() { if [[ $# -eq 0 ]]; then local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${
   local NAME; for NAME in "$@"; do if [[ -n "$NAME" ]]; then
 source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
 
-execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if ! eval "@call"; then
-  print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
+execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if eval "@call"
+  then print "$(color 32 "${RESULT-"Success"}")"
+  else print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
 
   if ! load "command:${ARGS[0]-"?"}" 2> /dev/null; then EXEC=( "?" "${EXEC[@]}" ); fi
 
