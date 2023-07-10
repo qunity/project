@@ -9,4 +9,4 @@ $(color 33 "Usage:")\n    command [options]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
 $(color 33 "Commands:")\n$(commands "./${NAME}")"
 
-EXEC=( "@replace" "execute '${NAME}' --help" )
+EXEC=( "execute '${NAME}' --help" )

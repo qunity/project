@@ -1,10 +1,6 @@
 /.idea
-
-/.qunity/replace/*
-!/.qunity/replace/.gitkeep
-
-/.qunity/replace/magento/*
-!/.qunity/replace/magento/.qunity
+/.qunity/replace
 
 /magento
-/magento-pwa
+/packages
+/pwa

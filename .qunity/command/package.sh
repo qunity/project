@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-NAME="pwa"
-DESK="Magento PWA command group"
+NAME="package"
+DESK="Magento package command group"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    command [options]\n

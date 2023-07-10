@@ -10,10 +10,10 @@ download() {
   print "$(color 32 "Downloading repository:") ${REPOSITORY}"
 
   if [[ -d "$DESTINATION_DIR" ]] && option "-f:--force" "$@"; then
-    echo -e "$(color 33 "WARNING:") Directory will be removed: ${DESTINATION_DIR}"
+    print "$(color 33 "WARNING:") Directory will be removed: ${DESTINATION_DIR}"
 
     if ! question:yesno "Are you sure you want to continue?"; then
-      result "Downloading aborted"; return 0
+      print "$(color 32 "Execution aborted")"; return 0
     elif ! rm -rf "$DESTINATION_DIR"; then
       result "Failed to remove directory: $(color 0 "$DESTINATION_DIR")"; return 1
     fi
@@ -29,5 +29,5 @@ download() {
       "$(color 0 "${REPLACE_DIR} > ${DESTINATION_DIR}")"; return 1
   fi
 
-  result "Downloading successful: $(color 0 "${REPOSITORY} > ${DESTINATION_DIR}")"
+  print "$(color 32 "Successful complete")"
 }

@@ -13,5 +13,7 @@ $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
 \t\t\t   WARNING: It will delete all previously unsaved data"
 
 magento:download() {
-  download "$MAGENTO_REPOSITORY" "$MAGENTO_REPLACE_DIR" "$MAGENTO_DESTINATION_DIR" "${ARGS[@]}"
+  if ! download "$MAGENTO_REPOSITORY" "$MAGENTO_REPLACE_DIR" "$MAGENTO_DESTINATION_DIR" "$@"; then
+    return 1
+  fi
 }

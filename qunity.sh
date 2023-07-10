@@ -17,28 +17,31 @@ commands() { local FILE; while read -r FILE; do unset "NAME" "DESK"; source "$FI
   printf "%${2-4}s%$(( ${3-20} * -1 ))s - %s\n" "" "${NAME-"$(basename "$FILE")"}" "${DESK-"..."}"
 done < <(ls "${QUNITY_DIR}/command/${1//":"/"/"}"/*.sh 2> /dev/null); }
 
-option() { local ARG; for ARG in "${@:2}"; do
-  if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then return 0; fi
+option() { local OPTION="$1" ARG; for ARG in "${@:2}"; do
+  if [[ "$ARG" == "${OPTION%%":"*}" || "$ARG" == "${OPTION##*":"}" ]]; then return 0; fi
 done; return 1; }
 
-load() { if [[ $# -eq 0 ]]; then
-  local NAMES; read -ra NAMES; ${FUNCNAME[0]} "${NAMES[@]}"; return 0; fi
-  local NAME; for NAME in "$@"; do if [[ -n "$NAME" ]]; then
-source "${QUNITY_DIR}/${NAME//":"/"/"}.sh"; fi; done; }
+argument() { local OPTION="$1" ARG SEARCH RESULT=(); for ARG in "${@:2}"; do
+  if [[ -z "${SEARCH-}" ]]; then
+    if [[ "$ARG" == "${OPTION%%":"*}" || "$ARG" == "${OPTION##*":"}" ]]; then SEARCH="true"; fi
+  continue; fi; if [[ "$ARG" == "-"* ]]; then break; fi
+RESULT[(( ${#RESULT[@]} + 1 ))]="$ARG"; done; echo -n "${RESULT[@]}"; }
 
-execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if eval "@call"
-  then print "$(color 32 "${RESULT-"Success"}")"
-  else print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
+load() { if [[ $# -eq 0 ]]; then
+  local ARGS; read -ra ARGS; ${FUNCNAME[0]} "${ARGS[@]}"; return 0; fi
+  local ARG; for ARG in "$@"; do if [[ -n "$ARG" ]]; then
+source "${QUNITY_DIR}/${ARG//":"/"/"}.sh" &> /dev/null; fi; done; }
+
+execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if ! eval "@call"; then
+  print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
 
   if ! load "command:${ARGS[0]-}" 2> /dev/null; then EXEC=( "? ${EXEC[*]}" ); fi
 
   if option "-h:--help" "${ARGS[@]}"; then ARGS[0]+="@help"; fi
   if [[ $# -eq 0 || "${ARGS[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
 
-  if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"
-  else print "$(color 32 "Execution:") ${0} ${ARGS[*]}"; fi
-
-  for CALL in "${EXEC[@]}"; do eval "${TEMPLATE/"@call"/"${CALL[@]}"}"; done
+  if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"; fi
+  for CALL in "${EXEC[@]}"; do eval "${TEMPLATE/"@call"/"${CALL[*]}"}"; done
 }
 
 HELP="$(color 32 "Qunity ${VERSION}")\n
