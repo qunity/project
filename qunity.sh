@@ -20,20 +20,20 @@ arg:has() { local ARG; for ARG in "${@:2}"; do
   if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then return 0; fi
 done; return 1; }
 
-arg:get() { local ARG SEARCH RESULT=(); for ARG in "${@:2}"; do if [[ -z "${SEARCH-}" ]]; then
+arg:get() { local RESULT=() SEARCH ARG; for ARG in "${@:2}"; do if [[ -z "${SEARCH-}" ]]; then
   if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then SEARCH="true"; fi
   continue; fi; if [[ "$ARG" == "-"* ]]; then break; fi
 RESULT[(( ${#RESULT[@]} + 1 ))]="$ARG"; done; echo "${RESULT[@]}"; }
 
 load() { if [[ $# -eq 0 ]]; then local ARGS; read -ra ARGS
   if ${FUNCNAME[0]} "${ARGS[@]}"; then return 0; else return 1; fi; fi
-  local ARG; for ARG in "$@"; do source "${QUNITY_DIR}/${ARG//":"/"/"}.sh" &> /dev/null
+  local ARG; for ARG in "$@"; do source "${QUNITY_DIR}/${ARG//":"/"/"}.sh"
 done; }
 
 ?() { eval "$*"; }; execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL
   if ! load "command:${ARGS[0]-}" 2> /dev/null; then EXEC=( "? ${EXEC[*]}" ); fi
   if [[ $# -eq 0 ]] || arg:has "-h:--help" "${ARGS[@]}"; then echo -e "${HELP[@]}"; return 0; fi
-  for CALL in "${EXEC[@]}"; do eval "${CALL[*]}"; done
+  for CALL in "${EXEC[@]}"; do ${CALL[*]}; done
 }
 
 HELP="$(color 32 "Qunity ${VERSION}")\n

@@ -8,7 +8,7 @@ variable:list() {
 
   local RESULT=() ARG
   for ARG in "$@"; do
-    local PREFIX="${ARG%%"*"*}" SUFFIXES="${ARG##*"*"}" NAMES NAME
+    local PREFIX="${ARG%%"*"*}" SUFFIXES="${ARG##*"*"}" SUFFIX NAMES NAME
 
     mapfile -t -d ' ' NAMES < <(eval "echo -n \"\${!${PREFIX}*}\"")
     mapfile -t -d ':' SUFFIXES < <(echo -n "$SUFFIXES")

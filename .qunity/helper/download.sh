@@ -17,18 +17,16 @@ download() {
     fi
 
     if ! rm -rf "$DESTINATION_DIR"; then
-      print "$(color 31 "Failed to remove directory:") $(color 0 "$DESTINATION_DIR")"; return 1
+      print "$(color 31 "Failed to remove directory:") ${DESTINATION_DIR}"; return 1
     fi
   fi
 
   if ! git clone --single-branch "$REPOSITORY" "$DESTINATION_DIR"; then
-    print "$(color 31 "Failed to clone repository:")" \
-      "$(color 0 "${REPOSITORY} > ${DESTINATION_DIR}")"; return 1
+    print "$(color 31 "Failed to clone repository:") ${REPOSITORY} > ${DESTINATION_DIR}"; return 1
   fi
 
   if [[ -d "$REPLACE_DIR" ]] && ! cp -r "$REPLACE_DIR" "$(dirname "$DESTINATION_DIR")"; then
-    print "$(color 31 "Failed to copy replacing directory:")" \
-      "$(color 0 "${REPLACE_DIR} > ${DESTINATION_DIR}")"; return 1
+    print "$(color 31 "Failed to copy directory:") ${REPLACE_DIR} > ${DESTINATION_DIR}"; return 1
   fi
 
   print "$(color 32 "Successful complete")"
