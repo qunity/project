@@ -1,6 +1,6 @@
 /.idea
 /.qunity/replace/*
 
-/magento/*
-/packages/*
-/pwa/*
+/magento
+/packages
+/pwa
