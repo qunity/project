@@ -3,11 +3,11 @@
 
 load library:variable:list library:variable:value helper:download
 
-NAME="package:download"
+NAME="download"
 DESK="Download Magento package(s)"
 
 HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n    command [options] [arguments]\n
+$(color 33 "Usage:")\n    package:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
     -f, --force\t\t - Forced download of repository
 \t\t\t   WARNING: It will delete all previously unsaved data
@@ -16,10 +16,14 @@ $(color 33 "Arguments:")\n    -p, --packages [...]\t - Package(s) name of Magent
 package:download() {
   local NAMES NAME;
 
-  if option "-p:--packages" "$@"; then
-    mapfile -t -d ' ' NAMES < <(argument "-p:--packages" "$@")
+  if arg:has "-p:--packages" "$@"; then
+    mapfile -t -d ' ' NAMES < <(arg:get "-p:--packages" "$@")
   else
     mapfile -t -d ' ' NAMES < <(variable:list "PKG_*_NAME" | variable:value)
+  fi
+
+  if [[ ${#NAMES[@]} -eq 0 ]]; then
+    print "$(color 32 "Package repositories not found for download")"; return 0
   fi
 
   for NAME in "${NAMES[@]}"; do

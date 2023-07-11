@@ -1,47 +1,39 @@
 #!/usr/bin/env bash
-# shellcheck source=./.qunity/[*/]*.sh; disable=SC2034,SC2016
+# shellcheck source=./.qunity/[*/]*.sh
 
 set -o nounset -o errexit
 
-readonly VERSION="v1.1.8-dev"
+readonly VERSION="v2.0.0-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
 if [[ -f "${BASE_DIR}/.env" ]]; then source "${BASE_DIR}/.env"; fi
 if [[ -f "${QUNITY_DIR}/.env" ]]; then source "${QUNITY_DIR}/.env"; fi
 
-color() { echo "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${*}"; }
-result() { RESULT="$*"; }; ?() { eval "$*"; }
+color() { echo -n "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${*}"; }
 
 commands() { local FILE; while read -r FILE; do unset "NAME" "DESK"; source "$FILE"
   printf "%${2-4}s%$(( ${3-20} * -1 ))s - %s\n" "" "${NAME-"$(basename "$FILE")"}" "${DESK-"..."}"
 done < <(ls "${QUNITY_DIR}/command/${1//":"/"/"}"/*.sh 2> /dev/null); }
 
-option() { local OPTION="$1" ARG; for ARG in "${@:2}"; do
-  if [[ "$ARG" == "${OPTION%%":"*}" || "$ARG" == "${OPTION##*":"}" ]]; then return 0; fi
+arg:has() { local ARG; for ARG in "${@:2}"; do
+  if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then return 0; fi
 done; return 1; }
 
-argument() { local OPTION="$1" ARG SEARCH RESULT=(); for ARG in "${@:2}"; do
-  if [[ -z "${SEARCH-}" ]]; then
-    if [[ "$ARG" == "${OPTION%%":"*}" || "$ARG" == "${OPTION##*":"}" ]]; then SEARCH="true"; fi
+arg:get() { local ARG SEARCH RESULT=(); for ARG in "${@:2}"; do if [[ -z "${SEARCH-}" ]]; then
+  if [[ "$ARG" == "${1%%":"*}" || "$ARG" == "${1##*":"}" ]]; then SEARCH="true"; fi
   continue; fi; if [[ "$ARG" == "-"* ]]; then break; fi
-RESULT[(( ${#RESULT[@]} + 1 ))]="$ARG"; done; echo -n "${RESULT[@]}"; }
+RESULT[(( ${#RESULT[@]} + 1 ))]="$ARG"; done; echo "${RESULT[@]}"; }
 
-load() { if [[ $# -eq 0 ]]; then
-  local ARGS; read -ra ARGS; ${FUNCNAME[0]} "${ARGS[@]}"; return 0; fi
-  local ARG; for ARG in "$@"; do if [[ -n "$ARG" ]]; then
-source "${QUNITY_DIR}/${ARG//":"/"/"}.sh" &> /dev/null; fi; done; }
+load() { if [[ $# -eq 0 ]]; then local ARGS; read -ra ARGS
+  if ${FUNCNAME[0]} "${ARGS[@]}"; then return 0; else return 1; fi; fi
+  local ARG; for ARG in "$@"; do source "${QUNITY_DIR}/${ARG//":"/"/"}.sh" &> /dev/null
+done; }
 
-execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL TEMPLATE='if ! eval "@call"; then
-  print "$(color 31 "${RESULT-"Runtime error"}")"; return 1; fi'
-
+?() { eval "$*"; }; execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL
   if ! load "command:${ARGS[0]-}" 2> /dev/null; then EXEC=( "? ${EXEC[*]}" ); fi
-
-  if option "-h:--help" "${ARGS[@]}"; then ARGS[0]+="@help"; fi
-  if [[ $# -eq 0 || "${ARGS[0]}" == *"@help" ]]; then echo -e "${HELP[@]}"; return 0; fi
-
-  if [[ "${EXEC[0]}" == "@replace" ]]; then unset "EXEC[0]"; TEMPLATE="@call"; fi
-  for CALL in "${EXEC[@]}"; do eval "${TEMPLATE/"@call"/"${CALL[*]}"}"; done
+  if [[ $# -eq 0 ]] || arg:has "-h:--help" "${ARGS[@]}"; then echo -e "${HELP[@]}"; return 0; fi
+  for CALL in "${EXEC[@]}"; do eval "${CALL[*]}"; done
 }
 
 HELP="$(color 32 "Qunity ${VERSION}")\n
