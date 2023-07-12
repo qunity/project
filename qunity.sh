@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v2.0.1-dev"
+readonly VERSION="v2.0.2-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 

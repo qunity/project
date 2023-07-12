@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 NAME="package"
-DESK="Magento package(s) command group"
+DESK="Magento application package(s) command group"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    ${NAME}:command [options] [arguments]\n

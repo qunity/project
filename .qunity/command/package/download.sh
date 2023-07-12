@@ -5,31 +5,29 @@ load library:variable:list library:variable:value
 load helper:download
 
 NAME="download"
-DESK="Download Magento package(s)"
+DESK="Download Magento application package(s)"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    package:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
     -f, --force\t\t - Forced download of repository
 \t\t\t   WARNING: It will delete all previously unsaved data
-$(color 33 "Arguments:")\n    -p, --packages ...\t - Package(s) name of Magento website"
+$(color 33 "Arguments:")\n    -p, --packages ...\t - Package(s) identity of Magento application"
 
 package:download() {
-  local NAMES NAME VARNAME;
+  local IDENTITIES ID VARNAME;
 
-  mapfile -t -d ' ' NAMES < <(
+  mapfile -t -d ' ' IDENTITIES < <(
     if arg:has "-p:--packages" "$@"; then arg:get "-p:--packages" "$@"
-    else variable:list "PKG_*_NAME" | variable:value; fi
+    else variable:list "PKG_*_IDENTITY" | variable:value; fi
   )
 
-  if [[ ${#NAMES[@]} -eq 0 ]]; then
+  if [[ ${#IDENTITIES[@]} -eq 0 ]]; then
     print "$(color 32 "Package repositories not listed for download")"; return 0
   fi
 
-  for NAME in "${NAMES[@]}"; do
-    NAME="${NAME%%[[:space:]]}"
-    VARNAME="$(echo -n "${NAME//[:-]/"_"}" | tr '[:lower:]' '[:upper:]')"
-
+  for ID in "${IDENTITIES[@]}"; do
+    ID="${ID%%[[:space:]]}"; VARNAME="$(echo -n "${ID//[:-]/"_"}" | tr '[:lower:]' '[:upper:]')"
     local SUFFIXES="_${VARNAME}_REPOSITORY:_${VARNAME}_REPLACE_DIR:_${VARNAME}_DESTINATION_DIR"
 
     if ! read -r REPOSITORY REPLACE_DIR DESTINATION_DIR < \
