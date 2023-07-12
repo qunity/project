@@ -3,7 +3,7 @@
 
 set -o nounset -o errexit
 
-readonly VERSION="v2.0.0-dev"
+readonly VERSION="v2.0.1-dev"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -33,7 +33,7 @@ done; }
 ?() { eval "$*"; }; execute() { local ARGS=( "$@" ) EXEC=( "$*" ) CALL
   if ! load "command:${ARGS[0]-}" 2> /dev/null; then EXEC=( "? ${EXEC[*]}" ); fi
   if [[ $# -eq 0 ]] || arg:has "-h:--help" "${ARGS[@]}"; then echo -e "${HELP[@]}"; return 0; fi
-  for CALL in "${EXEC[@]}"; do ${CALL[*]}; done
+  for CALL in "${EXEC[@]}"; do $CALL; done
 }
 
 HELP="$(color 32 "Qunity ${VERSION}")\n
