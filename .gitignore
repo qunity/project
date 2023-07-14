@@ -1,6 +1,5 @@
 /.idea
-/.qunity/replace/*
+/.qunity/replace/*/*
 
-/magento/*
+/www/*
 /packages/*/*
-/pwa/*
