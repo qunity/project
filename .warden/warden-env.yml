@@ -35,7 +35,7 @@ services:
           create_host_path: true
   php-fpm:
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - UPWARD_JS_UPWARD_PATH=/var/www/pwa/upward.yml
       - MAGENTO_BACKEND_URL=https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/
       - STAGING_SERVER_HOST=0.0.0.0
