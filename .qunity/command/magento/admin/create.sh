@@ -2,6 +2,7 @@
 # shellcheck disable=SC2034
 
 load library:variable:list library:variable:value
+load library:warden:exec
 
 NAME="create"
 DESK="Create Magento application admin(s)"
@@ -12,9 +13,6 @@ $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
 $(color 33 "Arguments:")\n    -a, --admins ...\t - Admin(s) identity of Magento application"
 
 magento:admin:create() {
-  readonly PHP="/usr/bin/php"
-  readonly MAGENTO="${BASE_DIR}/bin/magento"
-
   local IDENTITIES ID VARNAME;
 
   mapfile -t -d ' ' IDENTITIES < <(
@@ -36,9 +34,9 @@ magento:admin:create() {
       print "$(color 31 "Failed to get admins information configuration:") ${NAME}"; return 1
     fi
 
-    if ! $PHP "$MAGENTO" admin:user:create --admin-user "$USER" --admin-email "$EMAIL" \
-        --admin-password "$PASSWORD" --admin-firstname "$FIRSTNAME" \
-        --admin-lastname "$LASTNAME"; then
+    if ! warden:exec bin/magento admin:user:create --admin-user "$USER" \
+        --admin-email "$EMAIL" --admin-password "$PASSWORD" \
+        --admin-firstname "$FIRSTNAME" --admin-lastname "$LASTNAME"; then
       print "$(color 31 "Failed to create Magento website admin")"; return 1
     fi
   done

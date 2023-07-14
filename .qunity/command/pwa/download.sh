@@ -13,5 +13,5 @@ $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
 \t\t\t   WARNING: It will delete all previously unsaved data"
 
 pwa:download() {
-  if ! download "$PWA_REPOSITORY" "$PWA_REPLACE_DIR" "$PWA_DESTINATION_DIR" "$@"; then return 1; fi
+  if ! download "$MAGENTO_PWA_REPOSITORY" "$WARDEN_PWA_ROOT" "$@"; then return 1; fi
 }

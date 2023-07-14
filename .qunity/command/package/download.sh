@@ -35,6 +35,7 @@ package:download() {
       print "$(color 31 "Failed to get repository download configuration:") ${NAME}"; return 1
     fi
 
-    if ! download "$REPOSITORY" "$REPLACE_DIR" "$DESTINATION_DIR" "$@"; then return 1; fi
+    local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$REPOSITORY" | grep -o -P '[\w-]+\/[\w-]+')"
+    if ! download "$REPOSITORY" "${WARDEN_PKG_ROOT}/${REPOSITORY_DIR}" "$@"; then return 1; fi
   done
 }
