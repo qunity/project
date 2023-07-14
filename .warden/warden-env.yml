@@ -2,7 +2,7 @@ services:
   php-debug:
     environment:
       - NODE_ENV=development
-      - UPWARD_JS_UPWARD_PATH=/var/www/html/pwa/upward.yml
+      - UPWARD_JS_UPWARD_PATH=/var/www/pwa/upward.yml
       - MAGENTO_BACKEND_URL=https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/
       - DEV_SERVER_HOST=0.0.0.0
       - DEV_SERVER_PORT=${PWA_DEV_SERVER_PORT}
@@ -13,12 +13,12 @@ services:
     volumes:
       - type: bind
         source: ./${WARDEN_PKG_ROOT}
-        target: /var/www/html/packages
+        target: /var/packages
         bind:
           create_host_path: true
       - type: bind
         source: ./${WARDEN_PWA_ROOT}
-        target: /var/www/html/pwa
+        target: /var/www/pwa
         bind:
           create_host_path: true
       - type: bind
@@ -33,22 +33,10 @@ services:
         read_only: true
         bind:
           create_host_path: true
-      - type: bind
-        source: ./.qunity
-        target: /var/www/html/.qunity
-        read_only: true
-        bind:
-          create_host_path: true
-      - type: bind
-        source: ./qunity.sh
-        target: /var/www/html/qunity.sh
-        read_only: true
-        bind:
-          create_host_path: true
   php-fpm:
     environment:
       - NODE_ENV=production
-      - UPWARD_JS_UPWARD_PATH=/var/www/html/pwa/upward.yml
+      - UPWARD_JS_UPWARD_PATH=/var/www/pwa/upward.yml
       - MAGENTO_BACKEND_URL=https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/
       - STAGING_SERVER_HOST=0.0.0.0
       - STAGING_SERVER_PORT=${PWA_STAGING_SERVER_PORT}
@@ -59,12 +47,12 @@ services:
     volumes:
       - type: bind
         source: ./${WARDEN_PKG_ROOT}
-        target: /var/www/html/packages
+        target: /var/packages
         bind:
           create_host_path: true
       - type: bind
         source: ./${WARDEN_PWA_ROOT}
-        target: /var/www/html/pwa
+        target: /var/www/pwa
         bind:
           create_host_path: true
       - type: bind
@@ -76,18 +64,6 @@ services:
       - type: bind
         source: ${HOME}/.warden/ssl/certs/${TRAEFIK_DOMAIN}.crt.pem
         target: /etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.crt.pem
-        read_only: true
-        bind:
-          create_host_path: true
-      - type: bind
-        source: ./.qunity
-        target: /var/www/html/.qunity
-        read_only: true
-        bind:
-          create_host_path: true
-      - type: bind
-        source: ./qunity.sh
-        target: /var/www/html/qunity.sh
         read_only: true
         bind:
           create_host_path: true
