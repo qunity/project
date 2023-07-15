@@ -10,13 +10,13 @@ DESK="Create Magento website admin(s)"
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    magento:admin:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
-$(color 33 "Arguments:")\n    -a, --admins ...\t - Admin(s) identity of Magento website"
+$(color 33 "Arguments:")\n    -a, --admin ...\t - Admin(s) identity of Magento website"
 
 magento:admin:create() {
   local IDENTITIES ID VARNAME;
 
   mapfile -t -d ' ' IDENTITIES < <(
-    if arg:has "-a:--admins" "$@"; then arg:get "-a:--admins" "$@"
+    if arg:has "-a:--admin" "$@"; then arg:get "-a:--admin" "$@"
     else variable:list "MAGENTO_ADMIN_*_IDENTITY" | variable:value; fi
   )
 

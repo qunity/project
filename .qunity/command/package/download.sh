@@ -12,13 +12,13 @@ $(color 33 "Usage:")\n    package:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
     -f, --force\t\t - Forced download of repository
 \t\t\t   WARNING: It will delete all previously unsaved data
-$(color 33 "Arguments:")\n    -p, --packages ...\t - Package(s) identity of project"
+$(color 33 "Arguments:")\n    -p, --package ...\t - Package(s) identity of project"
 
 package:download() { # TODO: add installation of MAGENTO_PWA_* packages
   local IDENTITIES ID VARNAME;
 
   mapfile -t -d ' ' IDENTITIES < <(
-    if arg:has "-p:--packages" "$@"; then arg:get "-p:--packages" "$@"
+    if arg:has "-p:--package" "$@"; then arg:get "-p:--package" "$@"
     else variable:list "MAGENTO_PKG_*_IDENTITY" | variable:value; fi
   )
 
