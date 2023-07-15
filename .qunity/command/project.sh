@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 NAME="project"
-DESK="General group of project commands"
+DESK="General commands group of project"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    ${NAME}:command [options] [arguments]\n
