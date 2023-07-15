@@ -4,7 +4,7 @@
 load helper:download
 
 NAME="download"
-DESK="Download Magento website"
+DESK="Download Magento website repository"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    magento:${NAME} [options]\n

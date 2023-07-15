@@ -17,7 +17,7 @@ magento:install() {
   fi
 
   print "$(color 32 "Start installation Magento website")"
-  if ! warden:exec bin/magento setup:install; then
+  if ! warden:exec magento setup:install; then
     print "$(color 31 "Failed to install Magento website")"; return 1
   fi
 

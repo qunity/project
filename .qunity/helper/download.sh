@@ -4,7 +4,7 @@ load library:question:yesno
 
 download() {
   local REPOSITORY="$1"
-  local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$1" | grep -o -P '[\w-]+\/[\w-]+')"
+  local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$REPOSITORY" | grep -o -P '[\w-]+\/[\w-]+')"
   local REPLACE_DIR; REPLACE_DIR="$(realpath -m "${QUNITY_DIR}/replace/${REPOSITORY_DIR}")"
   local DESTINATION_DIR; DESTINATION_DIR="$(realpath --canonicalize-missing "${BASE_DIR}/${2}")"
 

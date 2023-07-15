@@ -4,7 +4,7 @@
 load helper:download
 
 NAME="download"
-DESK="Download Magento PWA"
+DESK="Download Magento PWA repository"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    pwa:${NAME} [options]\n

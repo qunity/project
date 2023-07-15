@@ -5,12 +5,12 @@ load library:variable:list library:variable:value
 load library:warden:exec
 
 NAME="create"
-DESK="Create Magento application admin(s)"
+DESK="Create Magento website admin(s)"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n    magento:admin:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
-$(color 33 "Arguments:")\n    -a, --admins ...\t - Admin(s) identity of Magento application"
+$(color 33 "Arguments:")\n    -a, --admins ...\t - Admin(s) identity of Magento website"
 
 magento:admin:create() {
   local IDENTITIES ID VARNAME;
@@ -34,7 +34,7 @@ magento:admin:create() {
       print "$(color 31 "Failed to get admins information configuration:") ${NAME}"; return 1
     fi
 
-    if ! warden:exec bin/magento admin:user:create --admin-user "$USER" \
+    if ! warden:exec magento admin:user:create --admin-user "$USER" \
         --admin-email "$EMAIL" --admin-password "$PASSWORD" \
         --admin-firstname "$FIRSTNAME" --admin-lastname "$LASTNAME"; then
       print "$(color 31 "Failed to create Magento website admin")"; return 1
