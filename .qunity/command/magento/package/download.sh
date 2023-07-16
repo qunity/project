@@ -5,16 +5,16 @@ load library:variable:list library:variable:value
 load helper:download
 
 NAME="download"
-DESK="Download project package(s)"
+DESK="Download Magento website package(s)"
 
 HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n    package:${NAME} [options] [arguments]\n
+$(color 33 "Usage:")\n    magento:package:${NAME} [options] [arguments]\n
 $(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
     -f, --force\t\t - Forced download of repository
 \t\t\t   WARNING: It will delete all previously unsaved data
-$(color 33 "Arguments:")\n    -p, --package ...\t - Package(s) identity of project"
+$(color 33 "Arguments:")\n    -p, --package ...\t - Package(s) identity of Magento website"
 
-package:download() { # TODO: add installation of MAGENTO_PWA_* packages
+magento:package:download() {
   local IDENTITIES ID VARNAME;
 
   mapfile -t -d ' ' IDENTITIES < <(
@@ -36,6 +36,7 @@ package:download() { # TODO: add installation of MAGENTO_PWA_* packages
     fi
 
     local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$REPOSITORY" | grep -o -P '[\w-]+\/[\w-]+')"
-    if ! download "$REPOSITORY" "${WARDEN_PKG_ROOT}/${REPOSITORY_DIR}" "$@"; then return 1; fi
+    if ! download "$REPOSITORY" \
+      "${WARDEN_WEB_ROOT}/packages/${REPOSITORY_DIR}" "$@"; then return 1; fi
   done
 }

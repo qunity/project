@@ -1,11 +1,4 @@
 services:
-  php-debug:
-    volumes:
-      - type: bind
-        source: ./${WARDEN_PKG_ROOT}
-        target: /var/packages
-        bind:
-          create_host_path: true
   php-fpm:
     environment:
       - NODE_ENV=development
@@ -21,11 +14,6 @@ services:
       - ${TRAEFIK_LISTEN:-127.0.0.1}:${PWA_DEV_SERVER_PORT}:${PWA_DEV_SERVER_PORT}
       - ${TRAEFIK_LISTEN:-127.0.0.1}:${PWA_STAGING_SERVER_PORT}:${PWA_STAGING_SERVER_PORT}
     volumes:
-      - type: bind
-        source: ./${WARDEN_PKG_ROOT}
-        target: /var/packages
-        bind:
-          create_host_path: true
       - type: bind
         source: ./${WARDEN_PWA_ROOT}
         target: /var/www/pwa
