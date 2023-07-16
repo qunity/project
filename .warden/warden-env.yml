@@ -2,14 +2,6 @@ services:
   php-fpm:
     environment:
       - NODE_ENV=development
-      - UPWARD_JS_UPWARD_PATH=/var/www/pwa/upward.yml
-      - MAGENTO_BACKEND_URL=https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/
-      - DEV_SERVER_HOST=0.0.0.0
-      - DEV_SERVER_PORT=${PWA_DEV_SERVER_PORT}
-      - STAGING_SERVER_HOST=0.0.0.0
-      - STAGING_SERVER_PORT=${PWA_STAGING_SERVER_PORT}
-      - CUSTOM_HTTPS_KEY=/etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.key.pem
-      - CUSTOM_HTTPS_CERT=/etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.crt.pem
     ports:
       - ${TRAEFIK_LISTEN:-127.0.0.1}:${PWA_DEV_SERVER_PORT}:${PWA_DEV_SERVER_PORT}
       - ${TRAEFIK_LISTEN:-127.0.0.1}:${PWA_STAGING_SERVER_PORT}:${PWA_STAGING_SERVER_PORT}
