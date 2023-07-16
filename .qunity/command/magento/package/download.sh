@@ -32,7 +32,7 @@ magento:package:download() {
 
     if ! read -r REPOSITORY < \
         <((variable:list "MAGENTO_PKG*${SUFFIXES}" | variable:value) 2> /dev/null); then
-      print "$(color 31 "Failed to get repository download configuration:") ${NAME}"; return 1
+      print "$(color 31 "Failed to get repository download configuration:") ${ID}"; return 1
     fi
 
     local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$REPOSITORY" | grep -o -P '[\w-]+\/[\w-]+')"

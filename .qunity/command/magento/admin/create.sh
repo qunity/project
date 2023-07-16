@@ -31,13 +31,14 @@ magento:admin:create() {
 
     if ! read -r USER EMAIL PASSWORD FIRSTNAME LASTNAME < \
         <((variable:list "MAGENTO_ADMIN_*${SUFFIXES}" | variable:value) 2> /dev/null); then
-      print "$(color 31 "Failed to get admins information configuration:") ${NAME}"; return 1
+      print "$(color 31 "Failed to get admins information configuration:") ${ID}"; return 1
     fi
 
     if ! warden:exec magento admin:user:create --admin-user "$USER" \
         --admin-email "$EMAIL" --admin-password "$PASSWORD" \
         --admin-firstname "$FIRSTNAME" --admin-lastname "$LASTNAME"; then
-      print "$(color 31 "Failed to create Magento website admin")"; return 1
+      print "$(color 31 "Failed to create Magento website admin")" \
+        "${FIRSTNAME} ${LASTNAME}"; return 1
     fi
   done
 }
