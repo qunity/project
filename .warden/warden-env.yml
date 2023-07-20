@@ -5,6 +5,7 @@ services:
       - MAGENTO_BACKEND_URL=https://${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}/
       - DEV_SERVER_PORT=${PWA_DEV_SERVER_PORT}
       - STAGING_SERVER_PORT=${PWA_STAGING_SERVER_PORT}
+      - ROOTCA_HTTPS_CERT=/etc/ssl/warden-rootca-cert/ca.cert.pem
       - CUSTOM_HTTPS_KEY=/etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.key.pem
       - CUSTOM_HTTPS_CERT=/etc/ssl/warden-ssl-certs/${TRAEFIK_DOMAIN}.crt.pem
     ports:
