@@ -21,5 +21,5 @@ pwa:install() {
     print "$(color 31 "Failed to build Magento PWA")"; return 1
   fi
 
-  print "$(color 32 "Magento PWA installation successful complete")"
+  print "$(color 32 "Installation Magento PWA successful complete")"
 }
