@@ -4,21 +4,21 @@
 load library:variable:list library:variable:value
 load helper:download
 
-NAME="download"
-DESK="Download Magento website package(s)"
+NAME="package:download"
+DESK="Download package(s) repositories of Magento website"
 
 HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n    magento:package:${NAME} [options] [arguments]\n
-$(color 33 "Options:")\n    -h, --help\t\t - Display this help menu\n
-    -f, --force\t\t - Forced download of repository
-\t\t\t   WARNING: It will delete all previously unsaved data
-$(color 33 "Arguments:")\n    -p, --package ...\t - Package(s) identity of Magento website"
+$(color 33 "Usage:")\n$(help:string "command [options] [arguments]")\n
+$(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
+$(help:string "-f, --force" "- Forced download of repository")
+$(help:string "" "  WARNING: It will delete all previously unsaved data")
+$(color 33 "Arguments:")\n$(help:string "-p, --package ..." "- Package(s) identity of Magento website")"
 
-magento:package:download() {
+package:download() {
   local IDENTITIES ID VARNAME;
 
   mapfile -t -d ' ' IDENTITIES < <(
-    if arg:has "-p:--package" "$@"; then arg:get "-p:--package" "$@"
+    if arg:has "-p:--package" "$@"; then arg:get "-p:--package" "${@//\//:}"
     else variable:list "MAGENTO_PKG_*_IDENTITY" | variable:value; fi
   )
 
@@ -27,7 +27,7 @@ magento:package:download() {
   fi
 
   for ID in "${IDENTITIES[@]}"; do
-    ID="${ID%%[[:space:]]}"; VARNAME="$(echo -n "${ID//[:-]/"_"}" | tr '[:lower:]' '[:upper:]')"
+    ID="${ID%%[[:space:]]}"; VARNAME="$(echo -n "${ID//[:-]/_}" | tr '[:lower:]' '[:upper:]')"
     local SUFFIXES="_${VARNAME}_REPOSITORY"
 
     if ! read -r REPOSITORY < \

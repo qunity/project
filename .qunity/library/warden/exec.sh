@@ -7,7 +7,6 @@ warden:exec() {
     php) ARGS=( "php-fpm" "/usr/bin/php" "${ARGS[@]:1}" ) ;;
     composer) ARGS=( "php-fpm" "/usr/bin/composer" "${ARGS[@]:1}" ) ;;
     magento) ARGS=( "php-fpm" "/var/www/html/bin/magento" "${ARGS[@]:1}" ) ;;
-    pwa|yarn) ARGS=( "php-fpm" "yarn" "--cwd" "/var/www/pwa" "${ARGS[@]:1}" ) ;;
   esac
 
   if warden env exec "${ARGS[@]}"; then return 0; else return 1; fi
