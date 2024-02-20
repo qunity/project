@@ -9,5 +9,5 @@ warden:exec() {
     magento) ARGS=( "php-fpm" "/var/www/html/bin/magento" "${ARGS[@]:1}" ) ;;
   esac
 
-  if warden env exec "${ARGS[@]}"; then return 0; else return 1; fi
+  if warden env exec "${ARGS[@]}"; then return 0; fi; return 1
 }

@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 variable:list() {
-  if [[ $# -eq 0 ]]; then
-    local ARGS; read -ra ARGS
-    if ${FUNCNAME[0]} "${ARGS[@]}"; then return 0; else return 1; fi
+  if [[ $# -eq 0 ]]; then local ARGS; read -ra ARGS
+    if ${FUNCNAME[0]} "${ARGS[@]}"; then return 0; fi; return 1
   fi
 
-  local RESULT=() ARG
-  for ARG in "$@"; do
+  local RESULT=() ARG; for ARG in "$@"; do
     local PREFIX="${ARG%%\**}" SUFFIXES="${ARG##*\*}" SUFFIX NAMES NAME
 
     mapfile -t -d ' ' NAMES < <(eval "echo -n \"\${!${PREFIX}*}\"")
