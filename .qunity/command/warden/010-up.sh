@@ -23,7 +23,7 @@ warden:up() {
     print "$(color 31 "Failed to run Warden environment")"; return 1
   fi
 
-  local WARDEN_READY; for (( i = 60; i > 0; i = i - 10 )); do
+  local WARDEN_READY; for (( i = 60; i > 0; i -= 10 )); do
     if ! warden:exec composer --version >> /dev/null; then sleep 10; continue; fi;
     WARDEN_READY="true"; break;
   done
