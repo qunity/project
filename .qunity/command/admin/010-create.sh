@@ -8,7 +8,7 @@ NAME="admin:create"
 DESK="Create admin(s) of Magento website"
 
 HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n$(help:string "command [options]")\n
+$(color 33 "Usage:")\n$(help:string "command [options] [arguments]")\n
 $(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
 $(color 33 "Arguments:")\n$(help:string "-a, --admin ..." "- Admin(s) identity of Magento website")"
 
