@@ -4,6 +4,7 @@
 set -o nounset -o errexit
 
 readonly VERSION="v4.0.0-dev"
+readonly SCRIPT="./$(basename "$0")"
 readonly BASE_DIR="$(realpath "$(dirname "$0")")"
 readonly QUNITY_DIR="${BASE_DIR}/.qunity"
 
@@ -41,7 +42,7 @@ done; }
 for CALL in "${EXEC[@]}"; do eval "$CALL"; done; }
 
 HELP="$(color 32 "Qunity ${VERSION}")\n
-$(color 33 "Usage:")\n$(help:string "command [options] [arguments]")\n
+$(color 33 "Usage:")\n$(help:string "${SCRIPT} [command] [options] [arguments]")\n
 $(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
 $(color 33 "Commands:")\n$(help:commands "./")"
 
