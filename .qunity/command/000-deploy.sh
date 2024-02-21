@@ -12,7 +12,7 @@ $(help:string "" "  WARNING: It will delete all previously unsaved data")"
 
 EXEC=(
   "execute warden:up"
-  "execute magento:download ${ARGS[*]:1}"
+  "execute magento:download --force"
   "execute magento:install"
   "execute admin:create"
 )
