@@ -14,12 +14,12 @@ if [[ -f "${QUNITY_DIR}/.env" ]]; then source "${QUNITY_DIR}/.env"; fi
 color() { echo -n "\033[${1}m${*:2}\033[0m"; }; print() { echo -e "$(date +'%T') ${*}"; }
 help:string() { printf "%${3-4}s%$(( ${4-30} * -1 ))s%s\n" "" "$1" "${2-}"; }
 
-help:commands() { local FILE; while read -r FILE; do unset "NAME" "DESK"; source "$FILE"
-  NAME="${NAME-"$(basename "$FILE")"}" DESK="- ${DESK-"..."}"
-  if [[ -d "${QUNITY_DIR}/command/${NAME//:/\/}" ]]; then local SUB="true"; echo; fi
+help:commands() { local CMD_DIR="${QUNITY_DIR}/command" SUB="" FILE; while read -r FILE; do
+  unset "NAME" "DESK"; source "$FILE"; NAME="${NAME-"$(basename "$FILE")"}" DESK="- ${DESK-"..."}"
+  if [[ -d "${CMD_DIR}/${NAME//:/\/}" ]]; then echo; SUB="true"; elif [[ -n "$SUB" ]]; then echo; SUB=""; fi
   help:string "$NAME" "$DESK" "${2-4}" "${3-30}"
-  if [[ -n "${SUB-}" ]]; then help:commands "$NAME" "$(( ${2-4} + 2 ))" "$(( ${3-30} - 2 ))"; fi
-done < <(ls "${QUNITY_DIR}/command/${1//:/\/}"/*.sh 2> /dev/null); }
+  if [[ -n "$SUB" ]]; then help:commands "$NAME" "$(( ${2-4} + 2 ))" "$(( ${3-30} - 2 ))"; fi
+done < <(ls "${CMD_DIR}/${1//:/\/}"/*.sh 2> /dev/null); }
 
 arg:has() { local ARG; for ARG in "${@:2}"; do
   if [[ "$ARG" == "${1%%:*}" || "$ARG" == "${1##*:}" ]]; then return 0; fi
