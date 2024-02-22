@@ -4,9 +4,9 @@
 NAME="magento"
 DESK="Magento website commands group"
 
-HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n$(help:string "${SCRIPT} [command] [options]")\n
-$(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
-$(color 33 "Commands:")\n$(help:commands "$NAME")"
+HELP="$(style 32 "$DESK")\n
+$(style 33 "Usage:")\n$(help:string "${SCRIPT} [command] [options]")\n
+$(style 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
+$(style 33 "Commands:")\n$(help:commands "$NAME")"
 
 EXEC=( "execute ${NAME} --help" )

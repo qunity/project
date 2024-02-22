@@ -7,10 +7,10 @@ load library:warden:exec
 NAME="magento:admin:create"
 DESK="Create admins of Magento website"
 
-HELP="$(color 32 "$DESK")\n
-$(color 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options] [arguments]")\n
-$(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
-$(color 33 "Arguments:")\n$(help:string "-a, --admin ..." "- Admins identity of Magento website")"
+HELP="$(style 32 "$DESK")\n
+$(style 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options] [arguments]")\n
+$(style 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
+$(style 33 "Arguments:")\n$(help:string "-a, --admin ..." "- Admins identity of Magento website")"
 
 magento:admin:create() {
   local IDENTITIES ID VARNAME;
@@ -21,7 +21,7 @@ magento:admin:create() {
   )
 
   if [[ ${#IDENTITIES[@]} -eq 0 ]]; then
-    print "$(color 32 "Magento website admins not listed for creating")"; return 0
+    print "$(style 32 "Magento website admins not listed for creating")"; return 0
   fi
 
   for ID in "${IDENTITIES[@]}"; do
@@ -31,17 +31,17 @@ magento:admin:create() {
 
     if ! read -r USER EMAIL PASSWORD FIRSTNAME LASTNAME < \
         <((variable:list "MAGENTO_ADMIN_*${SUFFIXES}" | variable:value) 2> /dev/null); then
-      print "$(color 31 "Failed to get admins information configuration:") ${ID}"; return 1
+      print "$(style 31 "Failed to get admins information configuration:") ${ID}"; return 1
     fi
 
     if ! warden:exec magento admin:user:create --admin-user "$USER" \
         --admin-email "$EMAIL" --admin-password "$PASSWORD" \
         --admin-firstname "$FIRSTNAME" --admin-lastname "$LASTNAME"; then
-      print "$(color 31 "Failed to create Magento website admin")" "${FIRSTNAME} ${LASTNAME}"; return 1
+      print "$(style 31 "Failed to create Magento website admin")" "${FIRSTNAME} ${LASTNAME}"; return 1
     fi
 
     if ! warden:exec magento admin:user:unlock "$USER"; then
-      print "$(color 31 "Failed to unlock Magento website admin")" "${FIRSTNAME} ${LASTNAME}"; return 1
+      print "$(style 31 "Failed to unlock Magento website admin")" "${FIRSTNAME} ${LASTNAME}"; return 1
     fi
   done
 }
