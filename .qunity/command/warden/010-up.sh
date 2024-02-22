@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-load library:warden:exec
-
 NAME="warden:up"
 DESK="Run Warden environment"
 
@@ -24,7 +22,7 @@ warden:up() {
   fi
 
   local WARDEN_READY; for (( i = 60; i > 0; i -= 10 )); do
-    if ! warden:exec composer --version >> /dev/null; then sleep 10; continue; fi;
+    if ! execute warden:status; then sleep 10; continue; fi;
     WARDEN_READY="true"; break;
   done
 

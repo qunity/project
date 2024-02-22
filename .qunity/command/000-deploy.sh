@@ -8,9 +8,5 @@ HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options]")\n
 $(color 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")"
 
-EXEC=(
-  "execute magento:download --force"
-  "execute warden:up"
-  "execute magento:install"
-  "execute admin:create"
-)
+EXEC=( "execute warden:down --volumes" "execute magento:download --force" "execute warden:up"
+"execute magento:install" "execute magento:admin:create" "execute magento:reindex" "execute magento:cache" )

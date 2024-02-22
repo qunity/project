@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-NAME="admin"
-DESK="Magento website admin(s) commands group"
+NAME="magento:admin"
+DESK="Magento website admin commands group"
 
 HELP="$(color 32 "$DESK")\n
 $(color 33 "Usage:")\n$(help:string "${SCRIPT} [command] [options]")\n
