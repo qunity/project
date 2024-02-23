@@ -21,5 +21,5 @@ magento:install() {
     print "$(style 31 "Failed to install Magento website")"; return 1
   fi
 
-  print "$(style 32 "Installation Magento website successful complete")"
+  print "$(style 32 "Install Magento website successful complete")"
 }

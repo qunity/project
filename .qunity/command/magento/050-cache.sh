@@ -7,13 +7,13 @@ NAME="magento:cache"
 DESK="Flush cache Magento website"
 
 HELP="$(style 32 "$DESK")\n
-$(style 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options]")\n
+$(style 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options] [arguments]")\n
 $(style 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
-$(style 33 "Arguments:")\n$(help:string "-c, --caches ..." "- Caches of Magento website")"
+$(style 33 "Arguments:")\n$(help:string "-c, --cache ..." "- Cache list of Magento website")"
 
 magento:cache() {
   local CACHES=(); mapfile -t -d ' ' CACHES < \
-    <(if arg:has "-c:--caches" "$@"; then arg:get "-c:--caches" "$@"; fi)
+    <(if arg:has "-c:--cache" "$@"; then arg:get "-c:--cache" "$@"; fi)
 
   print "$(style 32 "Flush cache Magento website")"
   if ! warden:exec magento cache:flush "${CACHES[@]%%[[:space:]]}"; then
