@@ -7,6 +7,6 @@ magento:create-directories() {
         "${BASE_DIR}/${WARDEN_WEB_ROOT}/dev/tools/Magento/Tools" \
         "${BASE_DIR}/${WARDEN_WEB_ROOT}/dev/build/publication/sanity/Magento/Tools/Sanity"
   then
-      print "$(style 31 "Failed to create magento directories for development")"; return 1
+      print "$(style 31 "Failed to create Magento directories for development")"; return 1
   fi
 }
