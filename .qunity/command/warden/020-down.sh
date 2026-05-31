@@ -10,7 +10,7 @@ HELP="$(style 32 "$DESK")\n
 $(style 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options]")\n
 $(style 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")\n
 $(help:string "-r, --remove" "- Stop and remove Warden environment data")
-$(help:string "" "  WARNING: It will remove all Compose volumes and certificates")"
+$(help:string "" "  WARNING: All Compose volumes and certificates will be removed")"
 
 warden:down() {
   local ARGS=(); print "$(style 32 "Stop Warden environment")"
@@ -22,7 +22,7 @@ warden:down() {
       print "$(style 32 "Execution aborted")"; return 0
     fi
 
-    ARGS[0]="--volumes"
+    ARGS+=("--volumes")
   fi
 
   if ! warden env down "${ARGS[@]}"; then
@@ -30,14 +30,14 @@ warden:down() {
   fi
 
   if arg:has "-r:--remove" "$@"; then
-    local WARDEN_CERT_FILES=( "/home/$(whoami)/.warden/ssl/certs/${TRAEFIK_DOMAIN}".*.pem )
+    local WARDEN_CERT_FILES=( "${HOME}/.warden/ssl/certs/${TRAEFIK_DOMAIN}".*.pem )
 
     if [[ ${#WARDEN_CERT_FILES[@]} -gt 1 && "${WARDEN_CERT_FILES[0]}" != *.\*.pem ]]; then
       if ! rm -rf "${WARDEN_CERT_FILES[@]}"; then
-        print "$(style 31 "Failed to remove certificates of Warden project")"; return 1
+        print "$(style 31 "Failed to remove Warden project certificates")"; return 1
       fi
     fi
   fi
 
-  print "$(style 32 "Stop Warden environment successful complete")"
+  print "$(style 32 "Warden environment stopped successfully")"
 }

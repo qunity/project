@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 NAME="magento:admin"
-DESK="Admin Magento commands group"
+DESK="Magento admin commands group"
 
 HELP="$(style 32 "$DESK")\n
 $(style 33 "Usage:")\n$(help:string "${SCRIPT} [command] [options]")\n

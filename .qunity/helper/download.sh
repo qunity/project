@@ -4,9 +4,14 @@ load library:question:yesno
 
 download() {
   local REPOSITORY="$1"
-  local REPOSITORY_DIR; REPOSITORY_DIR="$(echo -n "$REPOSITORY" | grep -o -P '[\w-]+\/[\w-]+')"
-  local REPLACE_DIR; REPLACE_DIR="$(realpath -m "${QUNITY_DIR}/replace/${REPOSITORY_DIR}")"
-  local DESTINATION_DIR; DESTINATION_DIR="$(realpath --canonicalize-missing "${BASE_DIR}/${2}")"
+  local REPOSITORY_DIR; REPOSITORY_DIR="$(printf '%s' "$REPOSITORY" | grep -oE '[A-Za-z0-9_-]+/[A-Za-z0-9_-]+')"
+  local DESTINATION_DIR="${BASE_DIR}/${2#/}"
+
+  if [[ -z "$REPOSITORY_DIR" ]]; then
+    print "$(style 31 "Failed to parse repository name:") ${REPOSITORY}"; return 1
+  fi
+
+  local REPLACE_DIR="${QUNITY_DIR}/replace/${REPOSITORY_DIR}"
 
   print "$(style 32 "Downloading repository:") ${REPOSITORY}"
 
@@ -30,5 +35,5 @@ download() {
     print "$(style 31 "Failed to copy directory:") ${REPLACE_DIR} > ${DESTINATION_DIR}"; return 1
   fi
 
-  print "$(style 32 "Successful complete")"
+  print "$(style 32 "Completed successfully")"
 }

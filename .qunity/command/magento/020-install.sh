@@ -11,7 +11,7 @@ $(style 33 "Usage:")\n$(help:string "${SCRIPT} ${NAME} [options]")\n
 $(style 33 "Options:")\n$(help:string "-h, --help" "- Display this help menu")"
 
 magento:install() {
-  print "$(style 32  "Install Composer packages")"
+  print "$(style 32 "Install Composer packages")"
   if ! warden:exec composer install; then
     print "$(style 31 "Failed to install Composer packages")"; return 1
   fi
@@ -21,5 +21,5 @@ magento:install() {
     print "$(style 31 "Failed to install Magento website")"; return 1
   fi
 
-  print "$(style 32 "Install Magento website successful complete")"
+  print "$(style 32 "Magento website installed successfully")"
 }

@@ -1,4 +1,1 @@
 services:
-  opensearch:
-    ports:
-      - ${TRAEFIK_LISTEN:-127.0.0.1}:${OPENSEARCH_EXTERNAL_PORT}:9200

@@ -6,7 +6,7 @@ variable:value() {
   fi
 
   local RESULT=() ARG; for ARG in "$@"; do
-    RESULT[(( ${#RESULT[@]} + 1 ))]="$(eval "echo -n \"\${${ARG}}\"")"
+    RESULT[${#RESULT[@]} + 1]="$(eval "printf '%s' \"\${${ARG}}\"")"
   done
 
   echo "${RESULT[@]}"

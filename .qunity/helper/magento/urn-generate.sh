@@ -7,10 +7,12 @@ magento:urn-generate() {
     print "$(style 31 "Failed to generate Catalog URN list for PhpStorm")"; return 1
   fi
 
-  local MAGENTO_DIR="${BASE_DIR}/${WARDEN_WEB_ROOT}"
+  local MAGENTO_DIR="${BASE_DIR}/${WARDEN_WEB_ROOT#/}"
+  local SED_I=( sed -i )
+  if [[ "$(uname)" == "Darwin" ]]; then SED_I=( sed -i '' ); fi
 
   # shellcheck disable=SC2016
-  if ! sed -i 's/\$PROJECT_DIR\$/\$PROJECT_DIR\$\/magento/g' "${MAGENTO_DIR}/misc.xml" ||
+  if ! "${SED_I[@]}" 's/\$PROJECT_DIR\$/\$PROJECT_DIR\$\/magento/g' "${MAGENTO_DIR}/misc.xml" ||
      ! mv -f "${MAGENTO_DIR}/misc.xml" "${BASE_DIR}/.idea/misc.xml"
   then
     print "$(style 31 "Failed to generate Catalog URN list for PhpStorm")"; return 1
